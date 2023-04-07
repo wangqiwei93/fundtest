@@ -1,0 +1,347 @@
+{
+  "uid" : "c020fdd0272321fc",
+  "name" : "测试数据：【 全省数字经济高质量发展大会，True，200，操作成功】",
+  "fullName" : "testcases.investment_analysis_test.test_14_honour_rank.TestGetMother#test_get_mother",
+  "historyId" : "5d615322f9de8bed9618e3ca132517c0",
+  "time" : {
+    "start" : 1675132412713,
+    "stop" : 1675132412721,
+    "duration" : 8
+  },
+  "description" : "该用例是针对光荣榜榜单分布接口的测试",
+  "descriptionHtml" : "<p>该用例是针对光荣榜榜单分布接口的测试</p>\n",
+  "status" : "broken",
+  "statusMessage" : "simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)",
+  "statusTrace" : "ranktype = 1\n\n    def post_honour_rank(ranktype):  # 光荣榜榜单分布\n        \"\"\"\n            获取产业基金分布\n            :return: 自定义的关键字返回结果 result\n            \"\"\"\n        result = ResultBase()\n        res = api_fund_mj_request.get_honour_rank_api(ranktype, headers=headerform)\n        # print(res.json())\n        result.success = True\n        try:\n>           result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['message'])\n\noperation/investment_analysis_test.py:350: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <Response [404]>, kwargs = {}\n\n    def json(self, **kwargs):\n        r\"\"\"Returns the json-encoded content of a response, if any.\n    \n        :param \\*\\*kwargs: Optional arguments that ``json.loads`` takes.\n        :raises ValueError: If the response body does not contain valid json.\n        \"\"\"\n    \n        if not self.encoding and self.content and len(self.content) > 3:\n            # No encoding set. JSON RFC 4627 section 3 states we should expect\n            # UTF-8, -16 or -32. Detect which one to use; If the detection or\n            # decoding fails, fall back to `self.text` (using chardet to make\n            # a best guess).\n            encoding = guess_json_utf(self.content)\n            if encoding is not None:\n                try:\n                    return complexjson.loads(\n                        self.content.decode(encoding), **kwargs\n                    )\n                except UnicodeDecodeError:\n                    # Wrong UTF codec detected; usually because it's not UTF-8\n                    # but some other 8-bit codec.  This is an RFC violation,\n                    # and the server didn't bother to tell us what codec *was*\n                    # used.\n                    pass\n>       return complexjson.loads(self.text, **kwargs)\n\n/usr/lib/python3/dist-packages/requests/models.py:897: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ns = '404 page not found\\n', encoding = None, cls = None, object_hook = None\nparse_float = None, parse_int = None, parse_constant = None\nobject_pairs_hook = None, use_decimal = False, kw = {}\n\n    def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,\n            parse_int=None, parse_constant=None, object_pairs_hook=None,\n            use_decimal=False, **kw):\n        \"\"\"Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON\n        document) to a Python object.\n    \n        *encoding* determines the encoding used to interpret any\n        :class:`str` objects decoded by this instance (``'utf-8'`` by\n        default).  It has no effect when decoding :class:`unicode` objects.\n    \n        Note that currently only encodings that are a superset of ASCII work,\n        strings of other encodings should be passed in as :class:`unicode`.\n    \n        *object_hook*, if specified, will be called with the result of every\n        JSON object decoded and its return value will be used in place of the\n        given :class:`dict`.  This can be used to provide custom\n        deserializations (e.g. to support JSON-RPC class hinting).\n    \n        *object_pairs_hook* is an optional function that will be called with\n        the result of any object literal decode with an ordered list of pairs.\n        The return value of *object_pairs_hook* will be used instead of the\n        :class:`dict`.  This feature can be used to implement custom decoders\n        that rely on the order that the key and value pairs are decoded (for\n        example, :func:`collections.OrderedDict` will remember the order of\n        insertion). If *object_hook* is also defined, the *object_pairs_hook*\n        takes priority.\n    \n        *parse_float*, if specified, will be called with the string of every\n        JSON float to be decoded.  By default, this is equivalent to\n        ``float(num_str)``. This can be used to use another datatype or parser\n        for JSON floats (e.g. :class:`decimal.Decimal`).\n    \n        *parse_int*, if specified, will be called with the string of every\n        JSON int to be decoded.  By default, this is equivalent to\n        ``int(num_str)``.  This can be used to use another datatype or parser\n        for JSON integers (e.g. :class:`float`).\n    \n        *parse_constant*, if specified, will be called with one of the\n        following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This\n        can be used to raise an exception if invalid JSON numbers are\n        encountered.\n    \n        If *use_decimal* is true (default: ``False``) then it implies\n        parse_float=decimal.Decimal for parity with ``dump``.\n    \n        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``\n        kwarg. NOTE: You should use *object_hook* or *object_pairs_hook* instead\n        of subclassing whenever possible.\n    \n        \"\"\"\n        if (cls is None and encoding is None and object_hook is None and\n                parse_int is None and parse_float is None and\n                parse_constant is None and object_pairs_hook is None\n                and not use_decimal and not kw):\n>           return _default_decoder.decode(s)\n\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <testcases.investment_analysis_test.test_14_honour_rank.TestGetMother object at 0x7f15f69accd0>\nrankname = '全省数字经济高质量发展大会', ranktype = 1, except_result = True\nexcept_code = 200, except_msg = '操作成功'\n\n    @allure.story(\"用例--获取光荣榜榜单分布\")\n    @allure.description(\"该用例是针对光荣榜榜单分布接口的测试\")\n    @allure.issue(\"https://yzw.corptssl.com/resource/fund\", name=\"点击，跳转到对应BUG的链接地址\")\n    @allure.testcase(\"https://yzw.corptssl.com/resource/fund\", name=\"点击，跳转到对应用例的链接地址\")\n    @allure.title(\"测试数据：【 {rankname}，{except_result}，{except_code}，{except_msg}】\")\n    @pytest.mark.single\n    @pytest.mark.parametrize(\"rankname, ranktype, except_result, except_code, except_msg\",\n                             api_test_fund_mj_data[\"honour_rank\"])\n    def test_get_mother(self, rankname, ranktype, except_result, except_code, except_msg):\n        logger.info(\"*************** 开始执行用例 ***************\")\n>       result = post_honour_rank(ranktype)\n\ntestcases/investment_analysis_test/test_14_honour_rank.py:30: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \noperation/investment_analysis_test.py:356: in post_honour_rank\n    result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['msg'])\n/usr/lib/python3/dist-packages/requests/models.py:897: in json\n    return complexjson.loads(self.text, **kwargs)\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: in loads\n    return _default_decoder.decode(s)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError",
+  "flaky" : false,
+  "newFailed" : false,
+  "newBroken" : true,
+  "newPassed" : false,
+  "retriesCount" : 0,
+  "retriesStatusChange" : false,
+  "beforeStages" : [ {
+    "name" : "delete_output_dir",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372542,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "base_url",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "_verify_url",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "pytestconfig",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "description" : "该用例是针对光荣榜榜单分布接口的测试",
+    "status" : "broken",
+    "statusMessage" : "simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)",
+    "statusTrace" : "ranktype = 1\n\n    def post_honour_rank(ranktype):  # 光荣榜榜单分布\n        \"\"\"\n            获取产业基金分布\n            :return: 自定义的关键字返回结果 result\n            \"\"\"\n        result = ResultBase()\n        res = api_fund_mj_request.get_honour_rank_api(ranktype, headers=headerform)\n        # print(res.json())\n        result.success = True\n        try:\n>           result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['message'])\n\noperation/investment_analysis_test.py:350: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <Response [404]>, kwargs = {}\n\n    def json(self, **kwargs):\n        r\"\"\"Returns the json-encoded content of a response, if any.\n    \n        :param \\*\\*kwargs: Optional arguments that ``json.loads`` takes.\n        :raises ValueError: If the response body does not contain valid json.\n        \"\"\"\n    \n        if not self.encoding and self.content and len(self.content) > 3:\n            # No encoding set. JSON RFC 4627 section 3 states we should expect\n            # UTF-8, -16 or -32. Detect which one to use; If the detection or\n            # decoding fails, fall back to `self.text` (using chardet to make\n            # a best guess).\n            encoding = guess_json_utf(self.content)\n            if encoding is not None:\n                try:\n                    return complexjson.loads(\n                        self.content.decode(encoding), **kwargs\n                    )\n                except UnicodeDecodeError:\n                    # Wrong UTF codec detected; usually because it's not UTF-8\n                    # but some other 8-bit codec.  This is an RFC violation,\n                    # and the server didn't bother to tell us what codec *was*\n                    # used.\n                    pass\n>       return complexjson.loads(self.text, **kwargs)\n\n/usr/lib/python3/dist-packages/requests/models.py:897: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ns = '404 page not found\\n', encoding = None, cls = None, object_hook = None\nparse_float = None, parse_int = None, parse_constant = None\nobject_pairs_hook = None, use_decimal = False, kw = {}\n\n    def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,\n            parse_int=None, parse_constant=None, object_pairs_hook=None,\n            use_decimal=False, **kw):\n        \"\"\"Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON\n        document) to a Python object.\n    \n        *encoding* determines the encoding used to interpret any\n        :class:`str` objects decoded by this instance (``'utf-8'`` by\n        default).  It has no effect when decoding :class:`unicode` objects.\n    \n        Note that currently only encodings that are a superset of ASCII work,\n        strings of other encodings should be passed in as :class:`unicode`.\n    \n        *object_hook*, if specified, will be called with the result of every\n        JSON object decoded and its return value will be used in place of the\n        given :class:`dict`.  This can be used to provide custom\n        deserializations (e.g. to support JSON-RPC class hinting).\n    \n        *object_pairs_hook* is an optional function that will be called with\n        the result of any object literal decode with an ordered list of pairs.\n        The return value of *object_pairs_hook* will be used instead of the\n        :class:`dict`.  This feature can be used to implement custom decoders\n        that rely on the order that the key and value pairs are decoded (for\n        example, :func:`collections.OrderedDict` will remember the order of\n        insertion). If *object_hook* is also defined, the *object_pairs_hook*\n        takes priority.\n    \n        *parse_float*, if specified, will be called with the string of every\n        JSON float to be decoded.  By default, this is equivalent to\n        ``float(num_str)``. This can be used to use another datatype or parser\n        for JSON floats (e.g. :class:`decimal.Decimal`).\n    \n        *parse_int*, if specified, will be called with the string of every\n        JSON int to be decoded.  By default, this is equivalent to\n        ``int(num_str)``.  This can be used to use another datatype or parser\n        for JSON integers (e.g. :class:`float`).\n    \n        *parse_constant*, if specified, will be called with one of the\n        following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This\n        can be used to raise an exception if invalid JSON numbers are\n        encountered.\n    \n        If *use_decimal* is true (default: ``False``) then it implies\n        parse_float=decimal.Decimal for parity with ``dump``.\n    \n        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``\n        kwarg. NOTE: You should use *object_hook* or *object_pairs_hook* instead\n        of subclassing whenever possible.\n    \n        \"\"\"\n        if (cls is None and encoding is None and object_hook is None and\n                parse_int is None and parse_float is None and\n                parse_constant is None and object_pairs_hook is None\n                and not use_decimal and not kw):\n>           return _default_decoder.decode(s)\n\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <testcases.investment_analysis_test.test_14_honour_rank.TestGetMother object at 0x7f15f69accd0>\nrankname = '全省数字经济高质量发展大会', ranktype = 1, except_result = True\nexcept_code = 200, except_msg = '操作成功'\n\n    @allure.story(\"用例--获取光荣榜榜单分布\")\n    @allure.description(\"该用例是针对光荣榜榜单分布接口的测试\")\n    @allure.issue(\"https://yzw.corptssl.com/resource/fund\", name=\"点击，跳转到对应BUG的链接地址\")\n    @allure.testcase(\"https://yzw.corptssl.com/resource/fund\", name=\"点击，跳转到对应用例的链接地址\")\n    @allure.title(\"测试数据：【 {rankname}，{except_result}，{except_code}，{except_msg}】\")\n    @pytest.mark.single\n    @pytest.mark.parametrize(\"rankname, ranktype, except_result, except_code, except_msg\",\n                             api_test_fund_mj_data[\"honour_rank\"])\n    def test_get_mother(self, rankname, ranktype, except_result, except_code, except_msg):\n        logger.info(\"*************** 开始执行用例 ***************\")\n>       result = post_honour_rank(ranktype)\n\ntestcases/investment_analysis_test/test_14_honour_rank.py:30: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \noperation/investment_analysis_test.py:356: in post_honour_rank\n    result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['msg'])\n/usr/lib/python3/dist-packages/requests/models.py:897: in json\n    return complexjson.loads(self.text, **kwargs)\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: in loads\n    return _default_decoder.decode(s)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "f902bd225fef5862",
+      "name" : "log",
+      "source" : "f902bd225fef5862.txt",
+      "type" : "text/plain",
+      "size" : 1188
+    }, {
+      "uid" : "73bb70c991039196",
+      "name" : "stderr",
+      "source" : "73bb70c991039196.txt",
+      "type" : "text/plain",
+      "size" : 1378
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "story",
+    "value" : "用例--获取光荣榜榜单分布"
+  }, {
+    "name" : "feature",
+    "value" : "光荣榜榜单分布"
+  }, {
+    "name" : "epic",
+    "value" : "光荣榜榜单分布"
+  }, {
+    "name" : "severity",
+    "value" : "normal"
+  }, {
+    "name" : "tag",
+    "value" : "single"
+  }, {
+    "name" : "parentSuite",
+    "value" : "testcases.investment_analysis_test"
+  }, {
+    "name" : "suite",
+    "value" : "test_14_honour_rank"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestGetMother"
+  }, {
+    "name" : "host",
+    "value" : "dev-business-01"
+  }, {
+    "name" : "thread",
+    "value" : "1477482-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "testcases.investment_analysis_test.test_14_honour_rank"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "except_code",
+    "value" : "200"
+  }, {
+    "name" : "except_msg",
+    "value" : "'操作成功'"
+  }, {
+    "name" : "except_result",
+    "value" : "True"
+  }, {
+    "name" : "rankname",
+    "value" : "'全省数字经济高质量发展大会'"
+  }, {
+    "name" : "ranktype",
+    "value" : "1"
+  } ],
+  "links" : [ {
+    "name" : "点击，跳转到对应用例的链接地址",
+    "url" : "https://yzw.corptssl.com/resource/fund",
+    "type" : "test_case"
+  }, {
+    "name" : "点击，跳转到对应BUG的链接地址",
+    "url" : "https://yzw.corptssl.com/resource/fund",
+    "type" : "issue"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 1,
+        "broken" : 1,
+        "skipped" : 0,
+        "passed" : 15,
+        "unknown" : 0,
+        "total" : 17
+      },
+      "items" : [ {
+        "uid" : "73ae54c053ca7166",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/22/allure/#testresult/73ae54c053ca7166",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667541368181,
+          "stop" : 1667541368250,
+          "duration" : 69
+        }
+      }, {
+        "uid" : "f4399433e9ecd5f8",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/21/allure/#testresult/f4399433e9ecd5f8",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667541368181,
+          "stop" : 1667541368250,
+          "duration" : 69
+        }
+      }, {
+        "uid" : "1b91830c40e94ca3",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/20/allure/#testresult/1b91830c40e94ca3",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667523962641,
+          "stop" : 1667523962690,
+          "duration" : 49
+        }
+      }, {
+        "uid" : "26da0f46e3667907",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/19/allure/#testresult/26da0f46e3667907",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667443703254,
+          "stop" : 1667443703311,
+          "duration" : 57
+        }
+      }, {
+        "uid" : "f752d9b0cff8ca5d",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/18/allure/#testresult/f752d9b0cff8ca5d",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666775670526,
+          "stop" : 1666775670601,
+          "duration" : 75
+        }
+      }, {
+        "uid" : "b77ce43cee825849",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/14/allure/#testresult/b77ce43cee825849",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666681575531,
+          "stop" : 1666681575604,
+          "duration" : 73
+        }
+      }, {
+        "uid" : "8c279049a80b35df",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/13/allure/#testresult/8c279049a80b35df",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert 401 == 200\n +  where 401 = <core.result_base.ResultBase object at 0x7f5d749248b0>.code",
+        "time" : {
+          "start" : 1666679820150,
+          "stop" : 1666679820160,
+          "duration" : 10
+        }
+      }, {
+        "uid" : "e01ddb1466dbc8ae",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/10/allure/#testresult/e01ddb1466dbc8ae",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666255783833,
+          "stop" : 1666255783964,
+          "duration" : 131
+        }
+      }, {
+        "uid" : "982658c6b8a76752",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/9/allure/#testresult/982658c6b8a76752",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "8f24c9d86cb49fec",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/8/allure/#testresult/8f24c9d86cb49fec",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "c2940bde7f26984f",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/7/allure/#testresult/c2940bde7f26984f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "2cd5fd818cc73f00",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/6/allure/#testresult/2cd5fd818cc73f00",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "c7791d3246e607d9",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/5/allure/#testresult/c7791d3246e607d9",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "3cf6f26a1c6f3bf",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/4/allure/#testresult/3cf6f26a1c6f3bf",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666247598799,
+          "stop" : 1666247598871,
+          "duration" : 72
+        }
+      }, {
+        "uid" : "8e770e3442b27ad1",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/3/allure/#testresult/8e770e3442b27ad1",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666245622585,
+          "stop" : 1666245622654,
+          "duration" : 69
+        }
+      }, {
+        "uid" : "1ff52c8153f44d7e",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/2/allure/#testresult/1ff52c8153f44d7e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666245525094,
+          "stop" : 1666245525164,
+          "duration" : 70
+        }
+      } ]
+    },
+    "tags" : [ "single" ]
+  },
+  "source" : "c020fdd0272321fc.json",
+  "parameterValues" : [ "200", "'操作成功'", "True", "'全省数字经济高质量发展大会'", "1" ]
+}

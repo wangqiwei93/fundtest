@@ -1,0 +1,205 @@
+[ {
+  "buildOrder" : 24,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/24/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 3271,
+    "skipped" : 0,
+    "passed" : 0,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 22,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/22/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 60,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 3211,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 21,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/21/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 60,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 3211,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 20,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/20/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 149,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 3122,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 19,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/19/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 174,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 3097,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 18,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/18/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 174,
+    "broken" : 24,
+    "skipped" : 0,
+    "passed" : 3073,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 14,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/14/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 137,
+    "broken" : 483,
+    "skipped" : 0,
+    "passed" : 2651,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 13,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/13/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 316,
+    "broken" : 97,
+    "skipped" : 0,
+    "passed" : 2858,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 10,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/10/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 138,
+    "broken" : 479,
+    "skipped" : 0,
+    "passed" : 2654,
+    "unknown" : 0,
+    "total" : 3271
+  }
+}, {
+  "buildOrder" : 9,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/9/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 60,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 1594,
+    "unknown" : 0,
+    "total" : 1654
+  }
+}, {
+  "buildOrder" : 8,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/8/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 7,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/7/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 6,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/6/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 5,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/5/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 4,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/4/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 3,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/3/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+}, {
+  "buildOrder" : 2,
+  "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/2/allure",
+  "reportName" : "AllureReport",
+  "data" : {
+    "failed" : 0,
+    "broken" : 0,
+    "skipped" : 0,
+    "passed" : 26,
+    "unknown" : 0,
+    "total" : 26
+  }
+} ]

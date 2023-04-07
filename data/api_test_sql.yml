@@ -1,0 +1,805 @@
+#  -- 省市产业基金规模排名----各区域详情
+test_getdetail_sql:
+  # 省市产业基金规模  各区域数据详情
+  # sql
+  - [ [ 2022,"SELECT COUNT(*) as '基金数',ROUND(SUM(sum_invest_amount)/10000,1) AS '基金规模',ROUND(SUM(invest_amount_two)/10000,1) AS '撬动社会资本',ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴',ROUND(SUM(sum_place_amount)/10000,1) AS '财政实缴',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 AND `quarter` = '2022年第二季度' GROUP BY data_city" ],
+      [ 2021,"SELECT COUNT(*) as '基金数',ROUND(SUM(sum_invest_amount)/10000,1) AS '基金规模',ROUND(SUM(invest_amount_two)/10000,1) AS '撬动社会资本',ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴',ROUND(SUM(sum_place_amount)/10000,1) AS '财政实缴',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 AND `quarter` = '2021年第四季度' GROUP BY data_city" ] ]
+
+test_getmotherfundmap_sql:
+  # 产业基金详情   各市参投母基金
+  # sal
+  - [ [ 2022,"SELECT COUNT(*) as fundcount,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY data_city", "SELECT fund_name,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 0  GROUP BY fund_id" ],
+      [ 2021,"SELECT COUNT(*) as fundcount,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_city", "SELECT fund_name,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0  GROUP BY fund_id" ] ]
+
+test_getscalerank_sql:
+  # 基金图谱  省市产业基金规模
+  # sal
+  - [ [ 2022,"SELECT ROUND(SUM(sum_invest_amount)/10000,1) AS '基金总规模',COUNT(*) AS '基金数',ROUND(SUM(invest_amount_two)/10000,1) AS '撬动社会资本（错误）',ROUND(SUM(sum_invest_amount)/10000,1) AS '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) AS '财政实缴额',CASE data_city WHEN '' THEN '省级' ELSE data_city END as data_city FROM dwd_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第一季度' and fund_type = 0 GROUP BY data_city" ],
+      [ 2021,"SELECT ROUND(SUM(sum_invest_amount)/10000,1) AS '基金总规模',COUNT(*) AS '基金数',ROUND(SUM(invest_amount_two)/10000,1) AS '撬动社会资本（错误）',ROUND(SUM(sum_invest_amount)/10000,1) AS '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) AS '财政实缴额',CASE data_city WHEN '' THEN '省级' ELSE data_city END as data_city FROM dwd_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_city" ] ]
+
+test_getcompleterate_sql:
+  # 基金图谱  省市产业基金规模
+  # sal
+  - [ "SELECT SUM(amount1) as '2022年投资额',SUM(amount2) as '2021年投资额',data_city FROM(
+SELECT ROUND(SUM(amount)/10000,1) as amount1,0 as amount2,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount)as amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as amount1,ROUND(SUM(amount)/10000,1) as amount2,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount)as amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city
+)as a GROUP BY data_city" ]
+
+
+test_getcompleteratebycity_sql:
+  # 基金图谱  省市产业基金规模
+  # sal
+  - [ [ 2022,"SELECT SUM(fundcount1) as '产业基金',ROUND(SUM(zong)/10000,1) as '基金总规模',ROUND(SUM(zongtouzi)/10000,1) as '总投资额',ROUND((SUM(zong)-SUM(zongtouzi))/10000,1) as '未投资',ROUND(SUM(sumamount3)/10000,1) as '直投项目投资额',ROUND(SUM(sumamount2)/10000,1) as '下设子基金投资额',SUM(projectcount) as '直投项目',SUM(fundcount) as '下设子基金',ROUND((SUM(zongtouzi)/SUM(zong))*100,1) as '投资进度',data_city FROM ( SELECT COUNT(*) as fundcount1,0 as projectcount, 0 as fundcount,0 as sumamount3,0 as sumamount2,0 as zong,0 as zongtouzi,data_city FROM dwd_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2022年第一季度' GROUP BY data_city UNION ALL SELECT 0 as fundcount1,count(*) as projectcount, 0 as fundcount,SUM(fund_invest_amount) as sumamount3,0 as sumamount2,0 as zong,0 as zongtouzi,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2022年第一季度' GROUP BY data_city UNION all SELECT 0 as fundcount1,0 as projectcount,COUNT(*) as fundcount,0 as sumamount3,SUM(invest_amount_one) as sumamount2,0 AS zong,0 as zongtouzi,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第一季度' GROUP BY data_city UNION ALL SELECT 0 as fundcount1,0 as projectcount,0 as fundcount,0 as sumamount3,0 as sumamount2,SUM(sum_invest_amount) as zong,0 as zongtouzi,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第一季度' and fund_type = 0 GROUP BY data_city UNION ALL SELECT 0 as fundcount1,0 as projectcount,0 as fundcount,0 as sumamount3,0 as sumamount2,0 as zong,SUM(sumamount1) as zongtouzi,data_city FROM ( SELECT SUM(invest_amount_one) as sumamount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第一季度' GROUP BY data_city UNION ALL SELECT SUM(fund_invest_amount) as sumamount1,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2022年第一季度' GROUP BY data_city )as a GROUP BY data_city ) as b GROUP BY data_city ORDER BY data_city DESC" ],
+    [ 2021,"SELECT SUM(fundcount1) as '产业基金',ROUND(SUM(zong)/10000,1) as '基金总规模',ROUND(SUM(zongtouzi)/10000,1) as '总投资额',ROUND((SUM(zong)-SUM(zongtouzi))/10000,1) as '未投资',ROUND(SUM(sumamount3)/10000,1) as '直投项目投资额',ROUND(SUM(sumamount2)/10000,1) as '下设子基金投资额',SUM(projectcount) as '直投项目',SUM(fundcount) as '下设子基金',ROUND((SUM(zongtouzi)/SUM(zong))*100,1) as '投资进度',data_city FROM (
+SELECT COUNT(*) as fundcount1,0 as projectcount, 0 as fundcount,0 as sumamount3,0 as sumamount2,0 as zong,0 as zongtouzi,data_city FROM dwd_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2021年第四季度' GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,count(*) as projectcount, 0 as fundcount,SUM(fund_invest_amount) as sumamount3,0 as sumamount2,0 as zong,0 as zongtouzi,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+UNION all
+SELECT 0 as fundcount1,0 as projectcount,COUNT(*) as fundcount,0 as sumamount3,SUM(invest_amount_one) as sumamount2,0 AS zong,0 as zongtouzi,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,0 as projectcount,0 as fundcount,0 as sumamount3,0 as sumamount2,SUM(sum_invest_amount) as zong,0 as zongtouzi,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_city
+UNION ALL 
+SELECT 0 as fundcount1,0 as projectcount,0 as fundcount,0 as sumamount3,0 as sumamount2,0 as zong,SUM(sumamount1) as zongtouzi,data_city FROM (
+SELECT SUM(invest_amount_one) as sumamount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' GROUP BY data_city
+UNION ALL
+SELECT SUM(fund_invest_amount) as sumamount1,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city
+) as b GROUP BY data_city ORDER BY data_city DESC" ] ]
+
+# 基金图谱   产业基金和基金总规模
+test_overview_sql:
+  # 基金图谱  产业基金和基金总规模
+  # sal
+  - [ [ 2022,"SELECT COUNT(*)-1 as fund_count,ROUND(SUM(sum_invest_amount)/10000,1) as sum_amount,ROUND(SUM(sum_place_amount)/10000,1) as '全省财政总实缴' FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 0" ],[ 2021,"SELECT COUNT(*)-1 as fund_count,ROUND(SUM(sum_invest_amount)/10000,1) as sum_amount,ROUND(SUM(sum_place_amount)/10000,1) as '全省财政总实缴' FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0" ] ]
+
+# 基金图谱   全省产业基金投资总进度
+test_getcompleterateall_sql:
+  # 基金图谱  全省产业基金投资总进度
+  # sal
+  - [ [ 2022,"SELECT ROUND((SUM(sumamount)-SUM(sumamount1)-SUM(sumamount2)-584000)/10000,1) as '未投资',ROUND((SUM(sumamount1)+584000)/10000,1) as '子基金',ROUND(SUM(sumamount2)/10000,1) as '直投项目',ROUND(SUM(sumamount)/10000,1) as '总规模' FROM ( SELECT SUM(sum_invest_amount) as sumamount,0 as sumamount1,0 as sumamount2,data_city  FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2022年第一季度' GROUP BY data_city UNION ALL  SELECT 0 as sumamount,SUM(invest_amount_one) as sumamount1,0 as sumamount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第一季度' GROUP BY data_city UNION ALL SELECT 0 as sumamount,0  as sumamount1,SUM(fund_invest_amount) as sumamount2,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2022年第一季度' GROUP BY data_city )as a" ],
+    [ 2021,"SELECT ROUND((SUM(sumamount)-SUM(sumamount1)-SUM(sumamount2)-584000)/10000,1) as '未投资',ROUND((SUM(sumamount1))/10000,1) as '子基金',ROUND(SUM(sumamount2)/10000,1) as '直投项目',ROUND(SUM(sumamount)/10000,1) as '总规模' FROM ( SELECT SUM(sum_invest_amount) as sumamount,0 as sumamount1,0 as sumamount2,data_city  FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2021年第四季度' GROUP BY data_city UNION ALL  SELECT 0 as sumamount,SUM(invest_amount_one) as sumamount1,0 as sumamount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' GROUP BY data_city UNION ALL SELECT 0 as sumamount,0  as sumamount1,SUM(fund_invest_amount) as sumamount2,data_city from ods_glgs_sjk_report_project_data WHERE project_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city )as a" ] ]
+
+# 基金图谱   省市财政出资情况
+test_getPaidRank_sql:
+  # 基金图谱  省市财政出资情况
+  # sal
+  - [ [ 2022,"SELECT ROUND(SUM(sum_place_amount)/SUM(sum_invest_amount)*100,0) as '占比',ROUND(SUM(sum_invest_amount)/10000,1) as '全省财政总认缴',ROUND(SUM(sum_place_amount)/10000,1) as '全省财政总实缴',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2022年第二季度' GROUP BY data_city ORDER BY data_city DESC" ],
+      [ 2021,"SELECT ROUND(SUM(sum_place_amount)/SUM(sum_invest_amount)*100,0) as '占比',ROUND(SUM(sum_invest_amount)/10000,1) as '全省财政总认缴',ROUND(SUM(sum_place_amount)/10000,1) as '全省财政总实缴',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 0 and `quarter` = '2022年第二季度' GROUP BY data_city ORDER BY data_city DESC" ] ]
+
+
+# 下设子基金页面  sql
+test_getProvinceChildFundInfo_sql:
+  # 下设子基金  下设子基金规模情况
+  # sal
+  - [ [ 2022,"SELECT SUM(zhishu) as '支数',SUM(cunliang) as '增量',SUM(zengliang) as '存量',data_city FROM (
+SELECT COUNT(*) as zhishu,0 as zengliang,ROUND(SUM(sum_invest_amount)/10000,1) as cunliang,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city
+UNION ALL
+SELECT 0 as zhishu,ROUND(SUM(sum_invest_amount)/10000,1) as zengliang,0 as cunliang,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ],
+    [ 2021,"SELECT SUM(zhishu) as '支数',SUM(zengliang) as '增量',SUM(cunliang) as '存量',data_city FROM (
+SELECT COUNT(*) as zhishu,ROUND(SUM(sum_invest_amount)/10000,1) as zengliang,0 as cunliang,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ] ]
+
+# 下设子基金规模情况  详情
+test_sub_getDetail_sql:
+  # 下设子基金  下设子基金规模情况
+  # sal
+  - [ [ 2022,"SELECT SUM(zijijin) as '子基金数',ROUND(SUM(zongguimo)/10000,1) '子基金总规模',ROUND(SUM(renjiao)/10000,1) as '财政认缴额',ROUND(SUM(shijiao)/10000,1) as '财政实缴额',SUM(procount) as '项目投资数',data_city from (
+SELECT count(*) as zijijin,SUM(sum_invest_amount) as zongguimo,SUM(sum_invest_amount) as renjiao,SUM(sum_place_amount) as shijiao,0 as procount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city
+UNION all
+SELECT 0 as zijijin,0 as zongguimo,0 as renjiao,0 as shijiao,count(*) as procount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度'  GROUP BY data_city
+)as a GROUP BY data_city" ],
+    [ 2021,"SELECT SUM(zijijin) as '子基金数',ROUND(SUM(zongguimo)/10000,1) '子基金总规模',ROUND(SUM(renjiao)/10000,1) as '财政认缴额',ROUND(SUM(shijiao)/10000,1) as '财政实缴额',SUM(procount) as '项目投资数',data_city from (
+SELECT count(*) as zijijin,SUM(sum_invest_amount) as zongguimo,SUM(sum_invest_amount) as renjiao,SUM(sum_place_amount) as shijiao,0 as procount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city
+UNION all
+SELECT 0 as zijijin,0 as zongguimo,0 as renjiao,0 as shijiao,count(*) as procount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度'  GROUP BY data_city
+)as a GROUP BY data_city" ] ]
+
+# 下设子基金财政出资情况
+test_sub_getChildFundGovPaidList_sql:
+  # 下设子基金  下设子基金财政出资情况
+  # sal
+  - [ [ 2022,"SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) as '财政实缴额',ROUND((ROUND(SUM(sum_place_amount)/10000,1)/ROUND(SUM(sum_invest_amount)/10000,1))*100,1) as '占比',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city" ],
+      [ 2021,"SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) as '财政实缴额',ROUND((ROUND(SUM(sum_place_amount)/10000,1)/ROUND(SUM(sum_invest_amount)/10000,1))*100,1) as '占比',data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city" ] ]
+
+# 下设子基金投资进度
+test_sub_getChildCompleteRate_sql:
+  # 下设子基金  下设子基金投资进度
+  # sal
+  - [ [ 2022,"SELECT ROUND(SUM(amount1)/10000,1) as '2022年投资额',ROUND(SUM(amount2)/10000,1) as '2021年投资额',ROUND((SUM(amount1)/SUM(sum_amount))*100,1) AS '占比',data_city FROM(
+SELECT SUM(fund_invest_amount) as amount1,0 as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2022年第二季度' GROUP BY data_city
+UNION ALL
+SELECT 0 as amount1,0 as amount2,SUM(sum_invest_amount) as sum_amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city
+UNION ALL 
+SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ],
+    [ 2021,"SELECT ROUND(SUM(amount1)/10000,1) as '2022年投资额',ROUND(SUM(amount2)/10000,1) as '2021年投资额',ROUND((SUM(amount2)/SUM(sum_amount))*100,1) AS '占比',data_city FROM(
+SELECT 0 as amount1,0 as amount2,SUM(sum_invest_amount) as sum_amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city
+UNION ALL 
+SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ] ]
+
+# 省内项目投资情况
+test_sub_getProvinceFundChildRate_sql:
+  # 下设子基金  下设子基金投资进度
+  # sal
+  - [ [ 2022,"SELECT ROUND(SUM(amount1)/10000,1) as '2022年投资额',ROUND(SUM(amount2)/10000,1) as '2021年投资额',ROUND((SUM(amount1)/SUM(sum_amount))*100,1) AS '占比',data_city FROM(
+SELECT SUM(fund_invest_amount) as amount1,0 as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2022年第二季度' GROUP BY data_city
+UNION ALL
+SELECT 0 as amount1,0 as amount2,SUM(sum_invest_amount) as sum_amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city
+UNION ALL 
+SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ],
+    [ 2021,"SELECT ROUND(SUM(amount1)/10000,1) as '2022年投资额',ROUND(SUM(amount2)/10000,1) as '2021年投资额',ROUND((SUM(amount2)/SUM(sum_amount))*100,1) AS '占比',data_city FROM(
+SELECT 0 as amount1,0 as amount2,SUM(sum_invest_amount) as sum_amount,data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city
+UNION ALL 
+SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,0 as sum_amount,data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city
+)as a GROUP BY data_city" ] ]
+
+# 下设子基金
+test_sub_getChildOverview_sql:
+  # 下设子基金  下设子基金投资进度
+  # sal
+  - [ [ 2022,"SELECT count(*) as '下设子基金',ROUND(SUM(sum_invest_amount)/10000,1) as '总规模' FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'" ],
+      [ 2021,"SELECT count(*) as '下设子基金',ROUND(SUM(sum_invest_amount)/10000,1) as '总规模' FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'" ] ]
+
+# 项目投资数
+test_sub_getProjectOverview_sql:
+  # 下设子基金  下设子基金投资进度
+  # sal
+  - [ [ 2022,"SELECT count(*) as '项目投资数',ROUND(SUM(sum_amount)/10000,1) as '总规模' FROM ods_glgs_sjk_report_project_data WHERE  `quarter` = '2022年第二季度'" ],
+      [ 2021,"SELECT count(*) as '项目投资数',ROUND(SUM(sum_amount)/10000,1) as '总规模' FROM dwd_glgs_sjk_report_project_data WHERE  `quarter` = '2021年第四季度'" ] ]
+
+# 项目投资数
+test_sub_getChildFundMap_sql:
+  # 下设子基金  下设子基金投资进度
+  # sal
+  - [ [ 2022,"SELECT COUNT(*) as fundcount,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY data_city", "SELECT fund_name,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' AND fund_type = 1 and data_city = '丽水市' GROUP BY fund_id" ],
+      [ 2021,"SELECT COUNT(*) as fundcount,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY data_city", "SELECT fund_name,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' AND fund_type = 1 and data_city = '丽水市' GROUP BY fund_id" ] ]
+
+# 基金总览
+
+#母基金
+test_overview_fundtype_0_sql:
+  # 基金总览  母基金
+  # sal
+  - [ [ 2022,"SELECT SUM(countfund) as '母基金',SUM(countfund)-SUM(countfund1) as '本年新增',countfund1 as '去年年末',ROUND((SUM(amount1)-SUM(amount))/10000,1) as '财政认缴本年新增',ROUND(SUM(amount1)/10000,1) as '总财政认缴',ROUND(SUM(amount)/10000,1) as '财政认缴年末',ROUND((SUM(amount3)-SUM(amount2))/10000,1) as '财政实缴新增',ROUND(SUM(amount3)/10000,1) as '财政本年实缴',ROUND(SUM(amount2)/10000,1) as '财政实缴去年年末',SUM(amount4) as '撬动社会资本本年新增',SUM(amount5) as '撬动社会资本去年年末',SUM(amount6) as '撬动社会资本',SUM(amount7) as '累计认缴投资额本年新增',SUM(amount8) as '累计认缴投资额去年年末',SUM(amount9) as '累计认缴投资额',SUM(amount10) as '累计实缴投资额本年新增',SUM(amount11) as '累计实缴投资额去年年末',SUM(amount12) as '累计实缴投资额',SUM(amount13) as '下设子基金本年新增',SUM(amount14) as '下设子基金总数',SUM(amount15) as '下设子基金去年年末',SUM(amount16) as '直投项目',SUM(amount19) as '直投项目去年年末',SUM(amount18) as '直投项目本年新增',SUM(amount17) as '产业基金认缴出资额',data_city FROM(
+SELECT 0 as countfund,COUNT(*) as countfund1,SUM(sum_invest_amount) as amount,0 as amount1,SUM(sum_place_amount) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度'  and fund_type = 0 GROUP BY data_city
+UNION ALL
+SELECT COUNT(*) as countfund,0 as countfund1,0 as amount,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(sum_place_amount) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount4,ROUND(SUM(amount1)/10000,1) as amount5,ROUND(SUM(amount)/10000,1) as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_two) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(project_equity_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_two) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(project_equity_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount7,ROUND(SUM(amount1)/10000,1) as amount8,ROUND(SUM(amount)/10000,1) as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and  fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度'  and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and  fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and  project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount10,ROUND(SUM(amount1)/10000,1) as amount11,ROUND(SUM(amount)/10000,1) as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(place_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(place_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,SUM(fundcount1)-SUM(fundcount2) as amount13,SUM(fundcount1) as amount14,SUM(fundcount2) as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT count(fund_id) as fundcount0,0 as fundcount1,0 as fundcount2,`quarter`,data_city FROM(
+SELECT * FROM(
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION ALL
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY fund_id HAVING COUNT(fund_id) = 1 
+)as d WHERE `quarter` = '2022年第二季度'
+UNION ALL
+SELECT 0 as fundcount0,count(fund_id) as fundcount1,0 as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount0,0 as fundcount1,count(fund_id) as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city 
+) as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,SUM(22projectcount) as amount16,ROUND(SUM(22amount)/10000,1) as amount17,SUM(22projectcount)-SUM(21projectcount) as amount18,SUM(21projectcount) as amount19,data_city FROM(
+SELECT COUNT(*) as 22projectcount,SUM(fund_invest_amount) as 22amount,0 as 21projectcount,0 as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as 22projectcount,0 as 22amount,COUNT(*) as 21projectcount,SUM(fund_invest_amount) as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 GROUP BY data_city) as a GROUP BY data_city
+)as a  GROUP BY data_city",
+    "SELECT SUM(countfund) as '母基金',SUM(countfund)-SUM(countfund1) as '本年新增',countfund1 as '去年年末',ROUND((SUM(amount1)-SUM(amount))/10000,1) as '财政认缴本年新增',ROUND(SUM(amount1)/10000,1) as '总财政认缴',ROUND(SUM(amount)/10000,1) as '财政认缴年末',ROUND((SUM(amount3)-SUM(amount2))/10000,1) as '财政实缴新增',ROUND(SUM(amount3)/10000,1) as '财政本年实缴',ROUND(SUM(amount2)/10000,1) as '财政实缴去年年末',SUM(amount4) as '撬动社会资本本年新增',SUM(amount5) as '撬动社会资本去年年末',SUM(amount6) as '撬动社会资本',SUM(amount7) as '累计认缴投资额本年新增',SUM(amount8) as '累计认缴投资额去年年末',SUM(amount9) as '累计认缴投资额',SUM(amount10) as '累计实缴投资额本年新增',SUM(amount11) as '累计实缴投资额去年年末',SUM(amount12) as '累计实缴投资额',SUM(amount13) as '下设子基金本年新增',SUM(amount14) as '下设子基金总数',SUM(amount15) as '下设子基金去年年末',SUM(amount16) as '直投项目',SUM(amount19) as '直投项目去年年末',SUM(amount18) as '直投项目本年新增',SUM(amount17) as '产业基金认缴出资额',data_city FROM(
+SELECT 0 as countfund,COUNT(*) as countfund1,SUM(sum_invest_amount) as amount,0 as amount1,SUM(sum_place_amount) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度'  and fund_type = 0 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT COUNT(*) as countfund,0 as countfund1,0 as amount,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(sum_place_amount) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 0 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount4,ROUND(SUM(amount1)/10000,1) as amount5,ROUND(SUM(amount)/10000,1) as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_two) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(project_equity_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_two) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(project_equity_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount7,ROUND(SUM(amount1)/10000,1) as amount8,ROUND(SUM(amount)/10000,1) as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and  fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度'  and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and  fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and  project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount10,ROUND(SUM(amount1)/10000,1) as amount11,ROUND(SUM(amount)/10000,1) as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(place_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(place_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,SUM(fundcount1)-SUM(fundcount2) as amount13,SUM(fundcount1) as amount14,SUM(fundcount2) as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT count(fund_id) as fundcount0,0 as fundcount1,0 as fundcount2,`quarter`,data_city FROM(
+SELECT * FROM(
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY fund_id HAVING COUNT(fund_id) = 1 
+)as d WHERE `quarter` = '2022年第二季度'
+UNION ALL
+SELECT 0 as fundcount0,count(fund_id) as fundcount1,0 as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount0,0 as fundcount1,count(fund_id) as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city 
+) as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,SUM(22projectcount) as amount16,ROUND(SUM(22amount)/10000,1) as amount17,SUM(22projectcount)-SUM(21projectcount) as amount18,SUM(21projectcount) as amount19,data_city FROM(
+SELECT COUNT(*) as 22projectcount,SUM(fund_invest_amount) as 22amount,0 as 21projectcount,0 as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and project_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as 22projectcount,0 as 22amount,COUNT(*) as 21projectcount,SUM(fund_invest_amount) as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_level = 2 GROUP BY data_city) as a GROUP BY data_city
+)as a  GROUP BY data_city" ],
+    [ 2021,"SELECT SUM(countfund) as '母基金',SUM(countfund)-SUM(countfund1) as '本年新增',countfund1 as '去年年末',ROUND((SUM(amount1)-SUM(amount))/10000,1) as '财政认缴本年新增',ROUND(SUM(amount1)/10000,1) as '总财政认缴',ROUND(SUM(amount)/10000,1) as '财政认缴年末',ROUND((SUM(amount3)-SUM(amount2))/10000,1) as '财政实缴新增',ROUND(SUM(amount3)/10000,1) as '财政本年实缴',ROUND(SUM(amount2)/10000,1) as '财政实缴去年年末',SUM(amount4) as '撬动社会资本本年新增',SUM(amount5) as '撬动社会资本去年年末',SUM(amount6) as '撬动社会资本',SUM(amount7) as '累计认缴投资额本年新增',SUM(amount8) as '累计认缴投资额去年年末',SUM(amount9) as '累计认缴投资额',SUM(amount10) as '累计实缴投资额本年新增',SUM(amount11) as '累计实缴投资额去年年末',SUM(amount12) as '累计实缴投资额',SUM(amount13) as '下设子基金本年新增',SUM(amount14) as '下设子基金总数',SUM(amount15) as '下设子基金去年年末',SUM(amount16) as '直投项目',SUM(amount19) as '直投项目去年年末',SUM(amount18) as '直投项目本年新增',SUM(amount17) as '产业基金认缴出资额',data_city FROM(
+SELECT 0 as countfund,COUNT(*) as countfund1,SUM(sum_invest_amount) as amount,0 as amount1,SUM(sum_place_amount) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度'  and fund_type = 0 GROUP BY data_city
+UNION ALL
+SELECT COUNT(*) as countfund,0 as countfund1,0 as amount,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(sum_place_amount) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount4,ROUND(SUM(amount1)/10000,1) as amount5,ROUND(SUM(amount)/10000,1) as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_two) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(project_equity_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_two) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(project_equity_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount7,ROUND(SUM(amount1)/10000,1) as amount8,ROUND(SUM(amount)/10000,1) as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and  fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度'  and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and  fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and  project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount10,ROUND(SUM(amount1)/10000,1) as amount11,ROUND(SUM(amount)/10000,1) as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(place_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(place_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and  data_province = '浙江省' GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,SUM(fundcount1)-SUM(fundcount2) as amount13,SUM(fundcount1) as amount14,SUM(fundcount2) as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT count(fund_id) as fundcount0,0 as fundcount1,0 as fundcount2,`quarter`,data_city FROM(
+SELECT * FROM(
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION ALL
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+)as a GROUP BY fund_id HAVING COUNT(fund_id) = 1 
+)as d WHERE `quarter` = '2021年第四季度'
+UNION ALL
+SELECT 0 as fundcount0,count(fund_id) as fundcount1,0 as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount0,0 as fundcount1,count(fund_id) as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and data_province = '浙江省' GROUP BY data_city 
+) as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,SUM(22projectcount) as amount16,ROUND(SUM(22amount)/10000,1) as amount17,SUM(22projectcount)-SUM(21projectcount) as amount18,SUM(21projectcount) as amount19,data_city FROM(
+SELECT COUNT(*) as 22projectcount,SUM(fund_invest_amount) as 22amount,0 as 21projectcount,0 as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as 22projectcount,0 as 22amount,COUNT(*) as 21projectcount,SUM(fund_invest_amount) as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 GROUP BY data_city) as a GROUP BY data_city
+)as a  GROUP BY data_city",
+      "SELECT SUM(countfund) as '母基金',SUM(countfund)-SUM(countfund1) as '本年新增',countfund1 as '去年年末',ROUND((SUM(amount1)-SUM(amount))/10000,1) as '财政认缴本年新增',ROUND(SUM(amount1)/10000,1) as '总财政认缴',ROUND(SUM(amount)/10000,1) as '财政认缴年末',ROUND((SUM(amount3)-SUM(amount2))/10000,1) as '财政实缴新增',ROUND(SUM(amount3)/10000,1) as '财政本年实缴',ROUND(SUM(amount2)/10000,1) as '财政实缴去年年末',SUM(amount4) as '撬动社会资本本年新增',SUM(amount5) as '撬动社会资本去年年末',SUM(amount6) as '撬动社会资本',SUM(amount7) as '累计认缴投资额本年新增',SUM(amount8) as '累计认缴投资额去年年末',SUM(amount9) as '累计认缴投资额',SUM(amount10) as '累计实缴投资额本年新增',SUM(amount11) as '累计实缴投资额去年年末',SUM(amount12) as '累计实缴投资额',SUM(amount13) as '下设子基金本年新增',SUM(amount14) as '下设子基金总数',SUM(amount15) as '下设子基金去年年末',SUM(amount16) as '直投项目',SUM(amount19) as '直投项目去年年末',SUM(amount18) as '直投项目本年新增',SUM(amount17) as '产业基金认缴出资额',data_city FROM(
+SELECT 0 as countfund,COUNT(*) as countfund1,SUM(sum_invest_amount) as amount,0 as amount1,SUM(sum_place_amount) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度'  and fund_type = 0 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT COUNT(*) as countfund,0 as countfund1,0 as amount,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(sum_place_amount) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 0 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount4,ROUND(SUM(amount1)/10000,1) as amount5,ROUND(SUM(amount)/10000,1) as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_two) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(project_equity_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_two) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(project_equity_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount7,ROUND(SUM(amount1)/10000,1) as amount8,ROUND(SUM(amount)/10000,1) as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(invest_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and  fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度'  and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(invest_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and  fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and  project_type = 1 and data_province = '浙江省'  and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,ROUND((SUM(amount)-SUM(amount1))/10000,1) as amount10,ROUND(SUM(amount1)/10000,1) as amount11,ROUND(SUM(amount)/10000,1) as amount12,0 as amount13,0 as amount14,0 as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT SUM(place_amount_one) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT SUM(fund_invest_amount) as amount,0 as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(place_amount_one) as amount1,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and  data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION all
+SELECT 0 as amount,SUM(fund_invest_amount) as amount1,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,SUM(fundcount1)-SUM(fundcount2) as amount13,SUM(fundcount1) as amount14,SUM(fundcount2) as amount15,0 as amount16,0 as amount17,0 as amount18,0 as amount19,data_city FROM(
+SELECT count(fund_id) as fundcount0,0 as fundcount1,0 as fundcount2,`quarter`,data_city FROM(
+SELECT * FROM(
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT fund_id,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+)as a GROUP BY fund_id HAVING COUNT(fund_id) = 1 
+)as d WHERE `quarter` = '2021年第四季度'
+UNION ALL
+SELECT 0 as fundcount0,count(fund_id) as fundcount1,0 as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount0,0 as fundcount1,count(fund_id) as fundcount2,`quarter`,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and fund_type = 1 and data_province = '浙江省' and data_level = 2 GROUP BY data_city 
+) as a GROUP BY data_city
+UNION ALL
+SELECT 0 as countfund,0 as countfund1,0 as amount,0 as amount1,0 as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8,0 as amount9,0 as amount10,0 as amount11,0 as amount12,0 as amount13,0 as amount14,0 as amount15,SUM(22projectcount) as amount16,ROUND(SUM(22amount)/10000,1) as amount17,SUM(22projectcount)-SUM(21projectcount) as amount18,SUM(21projectcount) as amount19,data_city FROM(
+SELECT COUNT(*) as 22projectcount,SUM(fund_invest_amount) as 22amount,0 as 21projectcount,0 as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and project_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as 22projectcount,0 as 22amount,COUNT(*) as 21projectcount,SUM(fund_invest_amount) as 21amount,data_city FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2020年第四季度' and project_type = 1 and data_level = 2 GROUP BY data_city) as a GROUP BY data_city
+)as a  GROUP BY data_city" ] ]
+
+# 省市县分布  母基金
+test_overview_regionArrange_fundtype_0_sql:
+  # 基金总览  省市县分布
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '累计',CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY data_county,data_city ORDER BY data_city",
+    "SELECT ROUND(SUM(amount1)-SUM(amount2),1) as '增量',data_county,data_city from(
+         SELECT ROUND(SUM(sum_invest_amount)/10000,1) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY data_county,data_city 
+         UNION ALL
+         SELECT 0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_county,data_city 
+         )as a GROUP BY data_county,data_city ORDER BY data_city" ],[ 2021,
+    "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '累计',CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_county,data_city ORDER BY data_city",
+    "SELECT ROUND(SUM(amount1)-SUM(amount2),1) as '增量',data_county,data_city from(
+     SELECT ROUND(SUM(sum_invest_amount)/10000,1) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY data_county,data_city 
+     UNION ALL
+     SELECT 0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 0 GROUP BY data_county,data_city 
+     )as a GROUP BY data_county,data_city ORDER BY data_city" ] ]
+
+# 省市县分布  子基金
+test_overview_regionArrange_fundtype_1_sql:
+  # 基金总览  省市县分布
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '累计',CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY data_county,data_city ORDER BY data_city",
+    "SELECT ROUND(SUM(amount1)-SUM(amount2),1) as '增量',data_county,data_city from(
+         SELECT ROUND(SUM(sum_invest_amount)/10000,1) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY data_county,data_city 
+         UNION ALL
+         SELECT 0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY data_county,data_city 
+         )as a GROUP BY data_county,data_city ORDER BY data_city" ],[ 2021,
+    "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '累计',CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY data_county,data_city ORDER BY data_city",
+    "SELECT ROUND(SUM(amount1)-SUM(amount2),1) as '增量',data_county,data_city from(
+     SELECT ROUND(SUM(sum_invest_amount)/10000,1) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY data_county,data_city 
+     UNION ALL
+     SELECT 0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 GROUP BY data_county,data_city 
+     )as a GROUP BY data_county,data_city ORDER BY data_city" ] ]
+
+# 基金投资状态 母基金
+test_overview_investStatus_fundtype_0_sql:
+  # 基金总览  基金投资状态
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY `status`,data_city",
+    "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 and data_level = 2  GROUP BY `status`,data_city",
+    "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+         SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 GROUP BY `status`,data_city
+         UNION ALL
+         SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY `status`,data_city
+         )as a GROUP BY `status`,data_city",
+    "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+              SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 0 and data_level = 2 GROUP BY `status`,data_city
+              UNION ALL
+              SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 and data_level = 2 GROUP BY `status`,data_city
+              )as a GROUP BY `status`,data_city"],
+    [ 2021,
+    "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY `status`,data_city",
+    "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 and data_level = 2  GROUP BY `status`,data_city",
+    "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+     SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 GROUP BY `status`,data_city
+     UNION ALL
+     SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 0 GROUP BY `status`,data_city
+     )as a GROUP BY `status`,data_city",
+    "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+          SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 0 and data_level = 2 GROUP BY `status`,data_city
+          UNION ALL
+          SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 0 and data_level = 2 GROUP BY `status`,data_city
+          )as a GROUP BY `status`,data_city"] ]
+
+# 基金投资状态 母基金
+test_overview_investStatus_fundtype_1_sql:
+  # 基金总览  基金投资状态
+  # year,isSelf:0:市，1市本级。type:1：累计2：增量sql-type1,sql-type2
+  - [ [ 2022, 0,
+    "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY `status`,data_city",
+    "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+                  SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1  GROUP BY `status`,data_city
+                  UNION ALL
+                  SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1  GROUP BY `status`,data_city
+                  )as a GROUP BY `status`,data_city" ],
+    [ 2022,1,
+      "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and  data_level = 2 GROUP BY `status`,data_city",
+      "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+              SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city
+              UNION ALL
+              SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city
+              )as a GROUP BY `status`,data_city" ],
+    [ 2021, 0,
+      "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city",
+      "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+     SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city
+     UNION ALL
+     SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 GROUP BY `status`,data_city
+     )as a GROUP BY `status`,data_city" ],
+    [ 2021, 1,
+      "SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city",
+      "SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM(
+       SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city
+       UNION ALL
+       SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city
+       )as a GROUP BY `status`,data_city" ] ]
+# 基金投资状态
+test_overview_investProgress_fundtype_0_sql:
+  # 基金总览  基金投资状态
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city,data_county 
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county 
+         )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2022年第二季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+         )as a GROUP BY data_city,data_county ORDER BY data_city" ],[ 2021,
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county 
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2020年第四季度'  GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2020年第四季度'  GROUP BY data_city,data_county 
+     )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2020年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2020年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+     )as a GROUP BY data_city,data_county ORDER BY data_city" ] ]
+
+
+# 子基金  基金总览 子基金  总规模  产业基金出资额  社会资本出资额  累计投资额
+test_overview_fundState_sql:
+  # 基金总览  子基金  基金总览 子基金  总规模  产业基金出资额  社会资本出资额  累计投资额
+  # year,
+  - [ [ 2022, "SELECT SUM(fundcount1) as '子基金',SUM(fundcount2) as '子基金去年年末',SUM(fundcount1)-SUM(fundcount2) as '子基金本年新增',ROUND(SUM(amount0)/10000,1) as '总规模',ROUND(SUM(amount1)/10000,1) as '总规模去年年末',ROUND((SUM(amount0)-SUM(amount1))/10000,1) as '总规模本年新增',ROUND(SUM(amount2)/10000,1) as '产业基金出资额',ROUND(SUM(amount3)/10000,1) as '产业基金出资额去年年末',ROUND((SUM(amount2)-SUM(amount3))/10000,1) as '产业基金出资额本年新增',SUM(amount4) as '累计投资额',SUM(amount5) as '累计投资额去年年末',SUM(amount6) as '累计投资额本年新增',SUM(amount7) as '占比',ROUND(SUM(amount8)/10000,1) as '社会资本出资额',ROUND(SUM(amount9)/10000,1) as '社会资本出资额去年年末',ROUND((SUM(amount8)-SUM(amount9))/10000,1) as '社会资本出资额本年新增',data_city FROM(
+SELECT COUNT(*) as fundcount1,0 as fundcount2,SUM(sum_invest_amount) as amount0,0 as amount1,SUM(invest_amount_one) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,SUM(invest_amount_two) as amount8,0 as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and data_province = '浙江省' and fund_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,COUNT(*) as fundcount2,0 as amount0,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(invest_amount_one) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8, SUM(invest_amount_two) as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and data_province = '浙江省' and fund_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,0 as fundcount2,0 as amount0,0 as amount1,0 as amount2,0 as amount3,SUM(amount0) as amount4,SUM(amount1) as amount5,ROUND((SUM(amount0)-SUM(amount1)),1) as amount6,ROUND((SUM(amount0)/SUM(amount2))*100,1) as amount7,0 as amount8,0 as amount9,data_city FROM(
+SELECT ROUND(SUM(fund_invest_amount)/10000,1) as amount0,0 as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2022年第二季度' and project_type = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as amount0,ROUND(SUM(fund_invest_amount)/10000,1) as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and project_type = 2 GROUP BY data_city
+union ALL 
+SELECT 0 as amount0,0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE data_province = '浙江省' and `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY data_city
+)as a GROUP BY data_city
+)as a GROUP BY data_city", "SELECT SUM(fundcount1) as '子基金',SUM(fundcount2) as '子基金去年年末',SUM(fundcount1)-SUM(fundcount2) as '子基金本年新增',ROUND(SUM(amount0)/10000,1) as '总规模',ROUND(SUM(amount1)/10000,1) as '总规模去年年末',ROUND((SUM(amount0)-SUM(amount1))/10000,1) as '总规模本年新增',ROUND(SUM(amount2)/10000,1) as '产业基金出资额',ROUND(SUM(amount3)/10000,1) as '产业基金出资额去年年末',ROUND((SUM(amount2)-SUM(amount3))/10000,1) as '产业基金出资额本年新增',SUM(amount4) as '累计投资额',SUM(amount5) as '累计投资额去年年末',SUM(amount6) as '累计投资额本年新增',SUM(amount7) as '占比',ROUND(SUM(amount8)/10000,1) as '社会资本出资额',ROUND(SUM(amount9)/10000,1) as '社会资本出资额去年年末',ROUND((SUM(amount8)-SUM(amount9))/10000,1) as '社会资本出资额本年新增',data_city FROM(
+SELECT COUNT(*) as fundcount1,0 as fundcount2,SUM(sum_invest_amount) as amount0,0 as amount1,SUM(invest_amount_one) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,SUM(invest_amount_two) as amount8,0 as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and data_province = '浙江省' and fund_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,COUNT(*) as fundcount2,0 as amount0,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(invest_amount_one) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8, SUM(invest_amount_two) as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and data_province = '浙江省' and fund_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,0 as fundcount2,0 as amount0,0 as amount1,0 as amount2,0 as amount3,SUM(amount0) as amount4,SUM(amount1) as amount5,ROUND((SUM(amount0)-SUM(amount1)),1) as amount6,ROUND((SUM(amount0)/SUM(amount2))*100,1) as amount7,0 as amount8,0 as amount9,data_city FROM(
+SELECT ROUND(SUM(fund_invest_amount)/10000,1) as amount0,0 as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2022年第二季度' and data_level = 2 and project_type = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as amount0,ROUND(SUM(fund_invest_amount)/10000,1) as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and data_level = 2 and project_type = 2 GROUP BY data_city
+union ALL 
+SELECT 0 as amount0,0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE data_province = '浙江省' and `quarter` = '2022年第二季度' and fund_type = 1 and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+)as a GROUP BY data_city" ],[ 2021,"SELECT SUM(fundcount1) as '子基金',SUM(fundcount2) as '子基金去年年末',SUM(fundcount1)-SUM(fundcount2) as '子基金本年新增',ROUND(SUM(amount0)/10000,1) as '总规模',ROUND(SUM(amount1)/10000,1) as '总规模去年年末',ROUND((SUM(amount0)-SUM(amount1))/10000,1) as '总规模本年新增',ROUND(SUM(amount2)/10000,1) as '产业基金出资额',ROUND(SUM(amount3)/10000,1) as '产业基金出资额去年年末',ROUND((SUM(amount2)-SUM(amount3))/10000,1) as '产业基金出资额本年新增',SUM(amount4) as '累计投资额',SUM(amount5) as '累计投资额去年年末',SUM(amount6) as '累计投资额本年新增',SUM(amount7) as '占比',ROUND(SUM(amount8)/10000,1) as '社会资本出资额',ROUND(SUM(amount9)/10000,1) as '社会资本出资额去年年末',ROUND((SUM(amount8)-SUM(amount9))/10000,1) as '社会资本出资额本年新增',data_city FROM(
+SELECT COUNT(*) as fundcount1,0 as fundcount2,SUM(sum_invest_amount) as amount0,0 as amount1,SUM(invest_amount_one) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,SUM(invest_amount_two) as amount8,0 as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and data_province = '浙江省' and fund_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,COUNT(*) as fundcount2,0 as amount0,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(invest_amount_one) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8, SUM(invest_amount_two) as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and data_province = '浙江省' and fund_type = 1 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,0 as fundcount2,0 as amount0,0 as amount1,0 as amount2,0 as amount3,SUM(amount0) as amount4,SUM(amount1) as amount5,ROUND((SUM(amount0)-SUM(amount1)),1) as amount6,ROUND((SUM(amount0)/SUM(amount2))*100,1) as amount7,0 as amount8,0 as amount9,data_city FROM(
+SELECT ROUND(SUM(fund_invest_amount)/10000,1) as amount0,0 as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and project_type = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as amount0,ROUND(SUM(fund_invest_amount)/10000,1) as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2020年第四季度' and project_type = 2 GROUP BY data_city
+union ALL 
+SELECT 0 as amount0,0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY data_city
+)as a GROUP BY data_city
+)as a GROUP BY data_city", "SELECT SUM(fundcount1) as '子基金',SUM(fundcount2) as '子基金去年年末',SUM(fundcount1)-SUM(fundcount2) as '子基金本年新增',ROUND(SUM(amount0)/10000,1) as '总规模',ROUND(SUM(amount1)/10000,1) as '总规模去年年末',ROUND((SUM(amount0)-SUM(amount1))/10000,1) as '总规模本年新增',ROUND(SUM(amount2)/10000,1) as '产业基金出资额',ROUND(SUM(amount3)/10000,1) as '产业基金出资额去年年末',ROUND((SUM(amount2)-SUM(amount3))/10000,1) as '产业基金出资额本年新增',SUM(amount4) as '累计投资额',SUM(amount5) as '累计投资额去年年末',SUM(amount6) as '累计投资额本年新增',SUM(amount7) as '占比',ROUND(SUM(amount8)/10000,1) as '社会资本出资额',ROUND(SUM(amount9)/10000,1) as '社会资本出资额去年年末',ROUND((SUM(amount8)-SUM(amount9))/10000,1) as '社会资本出资额本年新增',data_city FROM(
+SELECT COUNT(*) as fundcount1,0 as fundcount2,SUM(sum_invest_amount) as amount0,0 as amount1,SUM(invest_amount_one) as amount2,0 as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,SUM(invest_amount_two) as amount8,0 as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and data_province = '浙江省' and fund_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,COUNT(*) as fundcount2,0 as amount0,SUM(sum_invest_amount) as amount1,0 as amount2,SUM(invest_amount_one) as amount3,0 as amount4,0 as amount5,0 as amount6,0 as amount7,0 as amount8, SUM(invest_amount_two) as amount9,data_city FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2020年第四季度' and data_province = '浙江省' and fund_type = 1 and data_level = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as fundcount1,0 as fundcount2,0 as amount0,0 as amount1,0 as amount2,0 as amount3,SUM(amount0) as amount4,SUM(amount1) as amount5,ROUND((SUM(amount0)-SUM(amount1)),1) as amount6,ROUND((SUM(amount0)/SUM(amount2))*100,1) as amount7,0 as amount8,0 as amount9,data_city FROM(
+SELECT ROUND(SUM(fund_invest_amount)/10000,1) as amount0,0 as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and data_level = 2 and project_type = 2 GROUP BY data_city
+UNION ALL
+SELECT 0 as amount0,ROUND(SUM(fund_invest_amount)/10000,1) as amount1,0 as amount2,data_city FROM ods_glgs_sjk_report_project_data WHERE data_province = '浙江省' and `quarter` = '2020年第四季度' and data_level = 2 and project_type = 2 GROUP BY data_city
+union ALL 
+SELECT 0 as amount0,0 as amount1,ROUND(SUM(sum_invest_amount)/10000,1) as amount2,data_city FROM ods_glgs_sjk_report_fund_data WHERE data_province = '浙江省' and `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY data_city
+)as a GROUP BY data_city
+)as a GROUP BY data_city" ] ]
+
+#各地子基金规模情况 基金
+test_fundOverviewChildEvolute_scaleState_sql:
+  # 基金总览  省市县分布
+  # year,sql
+  - [ [ 2022,"SELECT ROUND(SUM(amount2)/10000,1) as '去年年末累计投资规模',ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '去年新增规模',data_county,data_city FROM(
+SELECT SUM(sum_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_county,data_city 
+UNION ALL 
+SELECT 0 as amount1,SUM(sum_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_county,data_city 
+ )as a GROUP BY data_county,data_city ORDER BY data_city" ],
+    [ 2021,"SELECT ROUND(SUM(amount2)/10000,1) as '去年年末累计投资规模',ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '去年新增规模',data_county,data_city FROM(
+SELECT SUM(sum_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_county,data_city 
+UNION ALL 
+SELECT 0 as amount1,SUM(sum_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度' GROUP BY data_county,data_city 
+ )as a GROUP BY data_county,data_city ORDER BY data_city" ] ]
+
+
+
+# 各地子基金投资进度   子基金
+test_overview_investProgress_fundtype_1_sql:
+  # 基金总览  基金投资状态
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度'  GROUP BY data_city,data_county 
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county 
+         )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2022年第二季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2022年第二季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+         UNION ALL
+         SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+         )as a GROUP BY data_city,data_county ORDER BY data_city" ],[ 2021,
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度'  GROUP BY data_city,data_county 
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2020年第四季度'  GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2020年第四季度'  GROUP BY data_city,data_county 
+     )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT data_city,data_county,ROUND((SUM(amount1)+SUM(amount2)-SUM(amount3)-SUM(amount4))/10000,1) as '增量',ROUND((SUM(amount3)+SUM(amount4))/10000,1) as '去年末' FROM(
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,sum( fund_invest_amount ) AS amount1,0 AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,sum( invest_amount_one ) AS amount2,0 as amount3,0 as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2021年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,sum( fund_invest_amount ) as amount3,0 as amount4 FROM ods_glgs_sjk_report_project_data WHERE project_type = 1 AND `quarter` = '2020年第四季度' and (`status` is null or `status` in(1,2)) GROUP BY data_city,data_county
+     UNION ALL
+     SELECT CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END as data_county,0 AS amount1,0 AS amount2,0 as amount3,sum( invest_amount_one ) as amount4 FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 AND `quarter` = '2020年第四季度' and (`status` is null or `status` in(0,1)) GROUP BY data_city,data_county 
+     )as a GROUP BY data_city,data_county ORDER BY data_city" ] ]
+
+# 各地子基金投资进度   子基金
+test_overview_fundOverviewChildEvolute_investProgress_sql:
+  # 基金总览  基金投资状态
+  # year,sql-type1,sql-type2
+  - [ [ 2022,
+    "SELECT ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '2022年新增',ROUND(SUM(amount2)/10000,1) as '2021年投资额',data_city,data_county FROM(
+         SELECT SUM(fund_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2022年第二季度' GROUP BY data_city,data_county
+         UNION ALL 
+         SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city,data_county
+         )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '2022年新增',ROUND(SUM(amount2)/10000,1) as '2021年投资额',data_city,data_county FROM(
+         SELECT SUM(fund_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2022年第二季度' and (`status` IS NULL or `status` in(1,2)) GROUP BY data_city,data_county
+         UNION ALL 
+         SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' and (`status` IS NULL or `status` in(1,2)) GROUP BY data_city,data_county
+         )as a GROUP BY data_city,data_county ORDER BY data_city" ],[ 2021,
+    "SELECT ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '2022年新增',ROUND(SUM(amount2)/10000,1) as '2021年投资额',data_city,data_county FROM(
+     SELECT SUM(fund_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' GROUP BY data_city,data_county
+     UNION ALL 
+     SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2020年第四季度' GROUP BY data_city,data_county
+     )as a GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT ROUND((SUM(amount1)-SUM(amount2))/10000,1) as '2022年新增',ROUND(SUM(amount2)/10000,1) as '2021年投资额',data_city,data_county FROM(
+     SELECT SUM(fund_invest_amount) as amount1,0 as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2021年第四季度' and (`status` IS NULL or `status` in(1,2)) GROUP BY data_city,data_county
+     UNION ALL 
+     SELECT 0 as amount1,SUM(fund_invest_amount) as amount2,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_project_data WHERE project_type = 2 and `quarter` ='2020年第四季度' and (`status` IS NULL or `status` in(1,2)) GROUP BY data_city,data_county
+     )as a GROUP BY data_city,data_county ORDER BY data_city" ] ]
+
+# 各地子基金财政出资情况  子基金
+test_overview_fundOverviewChildEvolute_fincInvest_sql:
+  # 基金总览  各地子基金财政出资情况
+  # year,sql-type1市累计,sql-type2市新增，sql3本级累计，sql4本级新增
+  - [ [ 2022,
+    "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) as '财政实缴额',ROUND((ROUND(SUM(sum_place_amount)/10000,1)/ROUND(SUM(sum_invest_amount)/10000,1))*100,1) as '占比',
+    CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE
+     fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city,data_county ORDER BY data_city",
+    "SELECT ROUND((SUM(22shijiao)-SUM(21shijiao))/10000,1) as '财政实缴额',ROUND((SUM(22renjiao)-SUM(21renjiao))/10000,1) as '财政认缴额',ROUND((SUM(22shijiao)-SUM(21shijiao))/(SUM(22renjiao)-SUM(21renjiao))*100,1) as '占比',data_city,data_county from(
+      SELECT SUM(sum_place_amount) as 22shijiao,SUM(sum_invest_amount) as 22renjiao,0 as 21shijiao,0 as 21renjiao,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' GROUP BY data_city,data_county
+      UNION ALL
+      SELECT 0 as 22shijiao,0 as 22renjiao,SUM(sum_place_amount) as 21shijiao,SUM(sum_invest_amount) as 21renjiao,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city,data_county
+      )as a GROUP BY data_city,data_county ORDER BY data_city" ],
+    [ 2021,
+      "SELECT ROUND(SUM(sum_invest_amount)/10000,1) as '财政认缴额',ROUND(SUM(sum_place_amount)/10000,1) as '财政实缴额',ROUND((ROUND(SUM(sum_place_amount)/10000,1)/ROUND(SUM(sum_invest_amount)/10000,1))*100,1) as '占比',CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city,data_county ORDER BY data_city",
+      "SELECT ROUND((SUM(22shijiao)-SUM(21shijiao))/10000,1) as '财政实缴额',ROUND((SUM(22renjiao)-SUM(21renjiao))/10000,1) as '财政认缴额',ROUND((SUM(22shijiao)-SUM(21shijiao))/(SUM(22renjiao)-SUM(21renjiao))*100,1) as '占比',data_city,data_county from(
+       SELECT SUM(sum_place_amount) as 22shijiao,SUM(sum_invest_amount) as 22renjiao,0 as 21shijiao,0 as 21renjiao,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' GROUP BY data_city,data_county
+       UNION ALL
+       SELECT 0 as 22shijiao,0 as 22renjiao,SUM(sum_place_amount) as 21shijiao,SUM(sum_invest_amount) as 21renjiao,CASE WHEN data_county IS NULL THEN '市级' ELSE data_county END AS data_county,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度' GROUP BY data_city,data_county
+       )as a GROUP BY data_city,data_county ORDER BY data_city" ] ]
+
+# 各地子基金财政出资情况  子基金
+test_overview_fundOverviewChildEvolute_getfundlist_sql:
+  # 基金总览  各地子基金财政出资情况 type:1累计type：2新增
+  # year,sql市累计,sql市新增，sql3市去年末，sql4本级累计，sql5本级新增，sql6本级年末
+  - [ [ 2022,
+    "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+     SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and fund_id in(
+     SELECT fund_id FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1
+     ) GROUP BY fund_id
+     UNION ALL
+     SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'
+     ) as a GROUP BY fund_id",
+    "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+     SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and fund_id in(
+     SELECT fund_id FROM(
+     SELECT * FROM (
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'
+     UNION ALL
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+     )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+     ) as b WHERE `quarter` = '2022年第二季度'	
+     ) GROUP BY fund_id
+     UNION ALL
+     SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM(
+     SELECT * FROM (
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'
+     UNION ALL
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+     )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+     ) as b WHERE `quarter` = '2022年第二季度'	
+     ) as a GROUP BY fund_id ",
+    "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+     SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and data_level = 2 and fund_id in(
+     SELECT fund_id FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2022年第二季度' and fund_type = 1 
+     ) GROUP BY fund_id
+     UNION ALL
+     SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度' and data_level = 2 
+     ) as a GROUP BY fund_id",
+    "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+     SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2022年第二季度' and data_level = 2 and fund_id in(
+     SELECT fund_id FROM(
+     SELECT * FROM (
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'
+     UNION ALL
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+     )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+     ) as b WHERE `quarter` = '2022年第二季度'	
+     ) GROUP BY fund_id
+     UNION ALL
+     SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM(
+     SELECT * FROM (
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2022年第二季度'
+     UNION ALL
+     SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+     )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+     ) as b WHERE `quarter` = '2022年第二季度'	and data_level = 2
+     ) as a GROUP BY fund_id",
+  ],
+    [ 2021,
+      "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+       SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and fund_id in(
+       SELECT fund_id FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1
+       ) GROUP BY fund_id
+       UNION ALL
+       SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+       ) as a GROUP BY fund_id",
+      "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+       SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and fund_id in(
+       SELECT fund_id FROM(
+       SELECT * FROM (
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+       UNION ALL
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度'
+       )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+       ) as b WHERE `quarter` = '2021年第四季度'	
+       ) GROUP BY fund_id
+       UNION ALL
+       SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM(
+       SELECT * FROM (
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+       UNION ALL
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度'
+       )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+       ) as b WHERE `quarter` = '2021年第四季度'	
+       ) as a GROUP BY fund_id",
+      "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+       SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and data_level = 2 and fund_id in(
+       SELECT fund_id FROM ods_glgs_sjk_report_fund_data WHERE `quarter` = '2021年第四季度' and fund_type = 1 
+       ) GROUP BY fund_id
+       UNION ALL
+       SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度' and data_level = 2 
+       ) as a GROUP BY fund_id",
+      "SELECT fund_id,fund_name as fundname,data_city,data_county,ROUND(SUM(jijinchuzi),1) as '已投金额',ROUND(SUM(amount),1) as '基金规模',ROUND(SUM(amount1),1) as '所属基金投资金额',ROUND(SUM(amount2),1) as '社会资本出资金额',ROUND(SUM(amount3),1) as '到位资金',SUM(projectcount) as '已投项目数',ROUND((SUM(jijinchuzi)/SUM(amount))*100,1) as '投资进度' FROM(
+       SELECT fund_id,fund_name,SUM(fund_invest_amount) as jijinchuzi,0 as amount,0 as amount1,0 as amount2,0 as amount3,COUNT(*) as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM ods_glgs_sjk_report_project_data WHERE `quarter` = '2021年第四季度' and data_level = 2 and fund_id in(
+       SELECT fund_id FROM(
+       SELECT * FROM (
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+       UNION ALL
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度'
+       )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+       ) as b WHERE `quarter` = '2021年第四季度'	
+       ) GROUP BY fund_id
+       UNION ALL
+       SELECT fund_id,fund_name,0 as jijinchuzi,sum_invest_amount as amount,invest_amount_one as amount1,invest_amount_two as amount2,sum_place_amount as amount3,0 as projectcount,CASE WHEN data_city IS NULL THEN '浙江省' ELSE data_city END as data_city,data_county FROM(
+       SELECT * FROM (
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2021年第四季度'
+       UNION ALL
+       SELECT * FROM ods_glgs_sjk_report_fund_data WHERE fund_type = 1 and `quarter` = '2020年第四季度'
+       )as a GROUP BY fund_id HAVING COUNT(fund_id) = 1
+       ) as b WHERE `quarter` = '2021年第四季度'	and data_level = 2
+       ) as a GROUP BY fund_id",
+    ] ]

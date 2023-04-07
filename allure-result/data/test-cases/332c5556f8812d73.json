@@ -1,0 +1,259 @@
+{
+  "uid" : "332c5556f8812d73",
+  "name" : "测试数据：【 2022,12198,温州市,0,2,True,200,操作成功,[[2022, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1  GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1  GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2022, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and  data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"]]】",
+  "fullName" : "testcases.overview_test.test_overview_07_fundOverviewChildEvolute_investStatus.TestGetMother#test_get_mother",
+  "historyId" : "c64737655461625ec938c997ea9f4e6e",
+  "time" : {
+    "start" : 1675132447367,
+    "stop" : 1675132447374,
+    "duration" : 7
+  },
+  "description" : "该用例是针对子基金-基金投资状态的测试",
+  "descriptionHtml" : "<p>该用例是针对子基金-基金投资状态的测试</p>\n",
+  "status" : "broken",
+  "statusMessage" : "simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)",
+  "statusTrace" : "year = 2022, areaId = 12198, areaName = '温州市', isSelf = 0, fundtype = 2\n\n    def get_fundOverviewChildEvolute_investStatus(year, areaId, areaName, isSelf, fundtype):\n        \"\"\"\n            获取产业基金分布\n            :return: 自定义的关键字返回结果 result\n            \"\"\"\n        result = ResultBase()\n        # payload = {\n        #     \"isChild\": isChild,\n        #     \"year\": year\n        # }\n    \n        res = fundmap.fundOverviewChildEvolute_invest_Status(year, areaId, areaName, isSelf, fundtype, headers=headerform)\n        result.success = True\n        try:\n>           result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['message'])\n\noperation/fundmapmain.py:609: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <Response [404]>, kwargs = {}\n\n    def json(self, **kwargs):\n        r\"\"\"Returns the json-encoded content of a response, if any.\n    \n        :param \\*\\*kwargs: Optional arguments that ``json.loads`` takes.\n        :raises ValueError: If the response body does not contain valid json.\n        \"\"\"\n    \n        if not self.encoding and self.content and len(self.content) > 3:\n            # No encoding set. JSON RFC 4627 section 3 states we should expect\n            # UTF-8, -16 or -32. Detect which one to use; If the detection or\n            # decoding fails, fall back to `self.text` (using chardet to make\n            # a best guess).\n            encoding = guess_json_utf(self.content)\n            if encoding is not None:\n                try:\n                    return complexjson.loads(\n                        self.content.decode(encoding), **kwargs\n                    )\n                except UnicodeDecodeError:\n                    # Wrong UTF codec detected; usually because it's not UTF-8\n                    # but some other 8-bit codec.  This is an RFC violation,\n                    # and the server didn't bother to tell us what codec *was*\n                    # used.\n                    pass\n>       return complexjson.loads(self.text, **kwargs)\n\n/usr/lib/python3/dist-packages/requests/models.py:897: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ns = '404 page not found\\n', encoding = None, cls = None, object_hook = None\nparse_float = None, parse_int = None, parse_constant = None\nobject_pairs_hook = None, use_decimal = False, kw = {}\n\n    def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,\n            parse_int=None, parse_constant=None, object_pairs_hook=None,\n            use_decimal=False, **kw):\n        \"\"\"Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON\n        document) to a Python object.\n    \n        *encoding* determines the encoding used to interpret any\n        :class:`str` objects decoded by this instance (``'utf-8'`` by\n        default).  It has no effect when decoding :class:`unicode` objects.\n    \n        Note that currently only encodings that are a superset of ASCII work,\n        strings of other encodings should be passed in as :class:`unicode`.\n    \n        *object_hook*, if specified, will be called with the result of every\n        JSON object decoded and its return value will be used in place of the\n        given :class:`dict`.  This can be used to provide custom\n        deserializations (e.g. to support JSON-RPC class hinting).\n    \n        *object_pairs_hook* is an optional function that will be called with\n        the result of any object literal decode with an ordered list of pairs.\n        The return value of *object_pairs_hook* will be used instead of the\n        :class:`dict`.  This feature can be used to implement custom decoders\n        that rely on the order that the key and value pairs are decoded (for\n        example, :func:`collections.OrderedDict` will remember the order of\n        insertion). If *object_hook* is also defined, the *object_pairs_hook*\n        takes priority.\n    \n        *parse_float*, if specified, will be called with the string of every\n        JSON float to be decoded.  By default, this is equivalent to\n        ``float(num_str)``. This can be used to use another datatype or parser\n        for JSON floats (e.g. :class:`decimal.Decimal`).\n    \n        *parse_int*, if specified, will be called with the string of every\n        JSON int to be decoded.  By default, this is equivalent to\n        ``int(num_str)``.  This can be used to use another datatype or parser\n        for JSON integers (e.g. :class:`float`).\n    \n        *parse_constant*, if specified, will be called with one of the\n        following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This\n        can be used to raise an exception if invalid JSON numbers are\n        encountered.\n    \n        If *use_decimal* is true (default: ``False``) then it implies\n        parse_float=decimal.Decimal for parity with ``dump``.\n    \n        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``\n        kwarg. NOTE: You should use *object_hook* or *object_pairs_hook* instead\n        of subclassing whenever possible.\n    \n        \"\"\"\n        if (cls is None and encoding is None and object_hook is None and\n                parse_int is None and parse_float is None and\n                parse_constant is None and object_pairs_hook is None\n                and not use_decimal and not kw):\n>           return _default_decoder.decode(s)\n\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <testcases.overview_test.test_overview_07_fundOverviewChildEvolute_investStatus.TestGetMother object at 0x7f15f6813a60>\nyear = 2022, areaId = 12198, areaName = '温州市', isSelf = 0, fundtype = 2\nexcept_result = True, except_code = 200, except_msg = '操作成功'\nsql = [[2022, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END ...er` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"]]\n\n    @allure.story('用例--子基金-基金投资状态')\n    @allure.description(\"该用例是针对子基金-基金投资状态的测试\")\n    @allure.issue(\"https://yzw.corptssl.com/fundOverview/fundOverviewData\", name=\"点击，跳转到对应BUG的链接地址\")\n    @allure.testcase(\"https://yzw.corptssl.com/fundOverview/fundOverviewData\", name=\"点击，跳转到对应用例的链接地址\")\n    @allure.title(\"测试数据：【 {year},{areaId},{areaName},{isSelf},{fundtype},{except_result},{except_code},{except_msg},{sql}】\")\n    @pytest.mark.single\n    @pytest.mark.parametrize(\"year, areaId, areaName, isSelf, fundtype, except_result, except_code, except_msg\",\n                             api_data[\"test_investStatus_year_city\"])\n    @pytest.mark.parametrize(\"sql\", api_data_sql[\"test_overview_investStatus_fundtype_1_sql\"])\n    # isself:0市，1市本级，type：1累计，2增量\n    def test_get_mother(self, year, areaId, areaName, isSelf, fundtype, except_result, except_code, except_msg, sql):\n        logger.info(\"*************** 开始执行用例 ***************\")\n>       result = get_fundOverviewChildEvolute_investStatus(year, areaId, areaName, isSelf, fundtype)\n\ntestcases/overview_test/test_overview_07_fundOverviewChildEvolute_investStatus.py:34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \noperation/fundmapmain.py:615: in get_fundOverviewChildEvolute_investStatus\n    result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['msg'])\n/usr/lib/python3/dist-packages/requests/models.py:897: in json\n    return complexjson.loads(self.text, **kwargs)\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: in loads\n    return _default_decoder.decode(s)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError",
+  "flaky" : false,
+  "newFailed" : false,
+  "newBroken" : true,
+  "newPassed" : false,
+  "retriesCount" : 0,
+  "retriesStatusChange" : false,
+  "beforeStages" : [ {
+    "name" : "delete_output_dir",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372542,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "base_url",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "_verify_url",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "pytestconfig",
+    "time" : {
+      "start" : 1675132372541,
+      "stop" : 1675132372541,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "description" : "该用例是针对子基金-基金投资状态的测试",
+    "status" : "broken",
+    "statusMessage" : "simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)",
+    "statusTrace" : "year = 2022, areaId = 12198, areaName = '温州市', isSelf = 0, fundtype = 2\n\n    def get_fundOverviewChildEvolute_investStatus(year, areaId, areaName, isSelf, fundtype):\n        \"\"\"\n            获取产业基金分布\n            :return: 自定义的关键字返回结果 result\n            \"\"\"\n        result = ResultBase()\n        # payload = {\n        #     \"isChild\": isChild,\n        #     \"year\": year\n        # }\n    \n        res = fundmap.fundOverviewChildEvolute_invest_Status(year, areaId, areaName, isSelf, fundtype, headers=headerform)\n        result.success = True\n        try:\n>           result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['message'])\n\noperation/fundmapmain.py:609: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <Response [404]>, kwargs = {}\n\n    def json(self, **kwargs):\n        r\"\"\"Returns the json-encoded content of a response, if any.\n    \n        :param \\*\\*kwargs: Optional arguments that ``json.loads`` takes.\n        :raises ValueError: If the response body does not contain valid json.\n        \"\"\"\n    \n        if not self.encoding and self.content and len(self.content) > 3:\n            # No encoding set. JSON RFC 4627 section 3 states we should expect\n            # UTF-8, -16 or -32. Detect which one to use; If the detection or\n            # decoding fails, fall back to `self.text` (using chardet to make\n            # a best guess).\n            encoding = guess_json_utf(self.content)\n            if encoding is not None:\n                try:\n                    return complexjson.loads(\n                        self.content.decode(encoding), **kwargs\n                    )\n                except UnicodeDecodeError:\n                    # Wrong UTF codec detected; usually because it's not UTF-8\n                    # but some other 8-bit codec.  This is an RFC violation,\n                    # and the server didn't bother to tell us what codec *was*\n                    # used.\n                    pass\n>       return complexjson.loads(self.text, **kwargs)\n\n/usr/lib/python3/dist-packages/requests/models.py:897: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ns = '404 page not found\\n', encoding = None, cls = None, object_hook = None\nparse_float = None, parse_int = None, parse_constant = None\nobject_pairs_hook = None, use_decimal = False, kw = {}\n\n    def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,\n            parse_int=None, parse_constant=None, object_pairs_hook=None,\n            use_decimal=False, **kw):\n        \"\"\"Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON\n        document) to a Python object.\n    \n        *encoding* determines the encoding used to interpret any\n        :class:`str` objects decoded by this instance (``'utf-8'`` by\n        default).  It has no effect when decoding :class:`unicode` objects.\n    \n        Note that currently only encodings that are a superset of ASCII work,\n        strings of other encodings should be passed in as :class:`unicode`.\n    \n        *object_hook*, if specified, will be called with the result of every\n        JSON object decoded and its return value will be used in place of the\n        given :class:`dict`.  This can be used to provide custom\n        deserializations (e.g. to support JSON-RPC class hinting).\n    \n        *object_pairs_hook* is an optional function that will be called with\n        the result of any object literal decode with an ordered list of pairs.\n        The return value of *object_pairs_hook* will be used instead of the\n        :class:`dict`.  This feature can be used to implement custom decoders\n        that rely on the order that the key and value pairs are decoded (for\n        example, :func:`collections.OrderedDict` will remember the order of\n        insertion). If *object_hook* is also defined, the *object_pairs_hook*\n        takes priority.\n    \n        *parse_float*, if specified, will be called with the string of every\n        JSON float to be decoded.  By default, this is equivalent to\n        ``float(num_str)``. This can be used to use another datatype or parser\n        for JSON floats (e.g. :class:`decimal.Decimal`).\n    \n        *parse_int*, if specified, will be called with the string of every\n        JSON int to be decoded.  By default, this is equivalent to\n        ``int(num_str)``.  This can be used to use another datatype or parser\n        for JSON integers (e.g. :class:`float`).\n    \n        *parse_constant*, if specified, will be called with one of the\n        following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This\n        can be used to raise an exception if invalid JSON numbers are\n        encountered.\n    \n        If *use_decimal* is true (default: ``False``) then it implies\n        parse_float=decimal.Decimal for parity with ``dump``.\n    \n        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``\n        kwarg. NOTE: You should use *object_hook* or *object_pairs_hook* instead\n        of subclassing whenever possible.\n    \n        \"\"\"\n        if (cls is None and encoding is None and object_hook is None and\n                parse_int is None and parse_float is None and\n                parse_constant is None and object_pairs_hook is None\n                and not use_decimal and not kw):\n>           return _default_decoder.decode(s)\n\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <testcases.overview_test.test_overview_07_fundOverviewChildEvolute_investStatus.TestGetMother object at 0x7f15f6813a60>\nyear = 2022, areaId = 12198, areaName = '温州市', isSelf = 0, fundtype = 2\nexcept_result = True, except_code = 200, except_msg = '操作成功'\nsql = [[2022, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END ...er` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"]]\n\n    @allure.story('用例--子基金-基金投资状态')\n    @allure.description(\"该用例是针对子基金-基金投资状态的测试\")\n    @allure.issue(\"https://yzw.corptssl.com/fundOverview/fundOverviewData\", name=\"点击，跳转到对应BUG的链接地址\")\n    @allure.testcase(\"https://yzw.corptssl.com/fundOverview/fundOverviewData\", name=\"点击，跳转到对应用例的链接地址\")\n    @allure.title(\"测试数据：【 {year},{areaId},{areaName},{isSelf},{fundtype},{except_result},{except_code},{except_msg},{sql}】\")\n    @pytest.mark.single\n    @pytest.mark.parametrize(\"year, areaId, areaName, isSelf, fundtype, except_result, except_code, except_msg\",\n                             api_data[\"test_investStatus_year_city\"])\n    @pytest.mark.parametrize(\"sql\", api_data_sql[\"test_overview_investStatus_fundtype_1_sql\"])\n    # isself:0市，1市本级，type：1累计，2增量\n    def test_get_mother(self, year, areaId, areaName, isSelf, fundtype, except_result, except_code, except_msg, sql):\n        logger.info(\"*************** 开始执行用例 ***************\")\n>       result = get_fundOverviewChildEvolute_investStatus(year, areaId, areaName, isSelf, fundtype)\n\ntestcases/overview_test/test_overview_07_fundOverviewChildEvolute_investStatus.py:34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \noperation/fundmapmain.py:615: in get_fundOverviewChildEvolute_investStatus\n    result.error = \"接口返回码是 【 {} 】, 返回信息：{} \".format(res.json()['code'], res.json()['msg'])\n/usr/lib/python3/dist-packages/requests/models.py:897: in json\n    return complexjson.loads(self.text, **kwargs)\n/usr/lib/python3/dist-packages/simplejson/__init__.py:518: in loads\n    return _default_decoder.decode(s)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <simplejson.decoder.JSONDecoder object at 0x7f15f7006a60>\ns = '404 page not found\\n'\n_w = <built-in method match of re.Pattern object at 0x7f15f8c29330>, _PY3 = True\n\n    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):\n        \"\"\"Return the Python representation of ``s`` (a ``str`` or ``unicode``\n        instance containing a JSON document)\n    \n        \"\"\"\n        if _PY3 and isinstance(s, bytes):\n            s = str(s, self.encoding)\n        obj, end = self.raw_decode(s)\n        end = _w(s, end).end()\n        if end != len(s):\n>           raise JSONDecodeError(\"Extra data\", s, end, len(s))\nE           simplejson.errors.JSONDecodeError: Extra data: line 1 column 5 - line 2 column 1 (char 4 - 19)\n\n/usr/lib/python3/dist-packages/simplejson/decoder.py:373: JSONDecodeError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "da6fcde197f9406a",
+      "name" : "log",
+      "source" : "da6fcde197f9406a.txt",
+      "type" : "text/plain",
+      "size" : 1272
+    }, {
+      "uid" : "95b7d31749e4f48e",
+      "name" : "stderr",
+      "source" : "95b7d31749e4f48e.txt",
+      "type" : "text/plain",
+      "size" : 1462
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "epic",
+    "value" : "基金总览"
+  }, {
+    "name" : "severity",
+    "value" : "normal"
+  }, {
+    "name" : "feature",
+    "value" : "子基金-基金投资状态"
+  }, {
+    "name" : "story",
+    "value" : "用例--子基金-基金投资状态"
+  }, {
+    "name" : "tag",
+    "value" : "single"
+  }, {
+    "name" : "parentSuite",
+    "value" : "testcases.overview_test"
+  }, {
+    "name" : "suite",
+    "value" : "test_overview_07_fundOverviewChildEvolute_investStatus"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestGetMother"
+  }, {
+    "name" : "host",
+    "value" : "dev-business-01"
+  }, {
+    "name" : "thread",
+    "value" : "1477482-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "testcases.overview_test.test_overview_07_fundOverviewChildEvolute_investStatus"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "areaId",
+    "value" : "12198"
+  }, {
+    "name" : "areaName",
+    "value" : "'温州市'"
+  }, {
+    "name" : "except_code",
+    "value" : "200"
+  }, {
+    "name" : "except_msg",
+    "value" : "'操作成功'"
+  }, {
+    "name" : "except_result",
+    "value" : "True"
+  }, {
+    "name" : "fundtype",
+    "value" : "2"
+  }, {
+    "name" : "isSelf",
+    "value" : "0"
+  }, {
+    "name" : "sql",
+    "value" : "[[2022, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1  GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1  GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2022, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and  data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"]]"
+  }, {
+    "name" : "year",
+    "value" : "2022"
+  } ],
+  "links" : [ {
+    "name" : "点击，跳转到对应用例的链接地址",
+    "url" : "https://yzw.corptssl.com/fundOverview/fundOverviewData",
+    "type" : "test_case"
+  }, {
+    "name" : "点击，跳转到对应BUG的链接地址",
+    "url" : "https://yzw.corptssl.com/fundOverview/fundOverviewData",
+    "type" : "issue"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 1,
+        "skipped" : 0,
+        "passed" : 5,
+        "unknown" : 0,
+        "total" : 6
+      },
+      "items" : [ {
+        "uid" : "ac1437f91976456",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/22/allure/#testresult/ac1437f91976456",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667543258364,
+          "stop" : 1667543258430,
+          "duration" : 66
+        }
+      }, {
+        "uid" : "b134e4bb9cba636f",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/21/allure/#testresult/b134e4bb9cba636f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667543258364,
+          "stop" : 1667543258430,
+          "duration" : 66
+        }
+      }, {
+        "uid" : "3f458c1e2e45fc37",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/20/allure/#testresult/3f458c1e2e45fc37",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667525731667,
+          "stop" : 1667525731735,
+          "duration" : 68
+        }
+      }, {
+        "uid" : "ea3698d5560be5a1",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/19/allure/#testresult/ea3698d5560be5a1",
+        "status" : "passed",
+        "time" : {
+          "start" : 1667445423221,
+          "stop" : 1667445423280,
+          "duration" : 59
+        }
+      }, {
+        "uid" : "f707d6ec69b84a4e",
+        "reportUrl" : "http://192.168.201.9:8088/job/Api_fund_test/18/allure/#testresult/f707d6ec69b84a4e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1666776966408,
+          "stop" : 1666776966484,
+          "duration" : 76
+        }
+      } ]
+    },
+    "tags" : [ "single" ]
+  },
+  "source" : "332c5556f8812d73.json",
+  "parameterValues" : [ "12198", "'温州市'", "200", "'操作成功'", "True", "2", "0", "[[2022, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1  GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1  GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2022, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and  data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2022年第二季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 0, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"], [2021, 1, \"SELECT count(*) as '累计',CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city\", \"SELECT SUM(fundcount1)-SUM(fundcount2) as '增量',`status`,data_city FROM( SELECT count(*) as fundcount1, 0 as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2021年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city UNION ALL SELECT 0 as fundcount1,count(*) as fundcount2,CASE `status` WHEN 0 THEN '投资期' WHEN 1 THEN '退出期' WHEN 2 THEN '已到期' ELSE '其他' END as `status`,CASE WHEN data_city IS NULL THEN '省级' ELSE data_city END as data_city FROM ods_glgs_sjk_report_fund_data WHERE  `quarter` = '2020年第四季度' and fund_type = 1 and data_level = 2 GROUP BY `status`,data_city )as a GROUP BY `status`,data_city\"]]", "2022" ]
+}

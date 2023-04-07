@@ -1,0 +1,114 @@
+{
+  "total" : 18,
+  "items" : [ {
+    "uid" : "192f804598a64186b49a506f82c60e38",
+    "name" : "基金总览",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 12,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 12
+    }
+  }, {
+    "uid" : "06d37def906730d1627d6461999e48d9",
+    "name" : "基金图谱页面",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 7,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 7
+    }
+  }, {
+    "uid" : "2f37d77cf7a9ffb8b3e75cbd17ed510b",
+    "name" : "下设子基金页面",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 6,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 6
+    }
+  }, {
+    "uid" : "1690fee1c75971ad565f491da797cd14",
+    "name" : "基金库列表",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "958cb05856a5a83d888e2f73210f6508",
+    "name" : "重大项目领域分布列表",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "45484f1ed95c1a33a1e4260c986f1714",
+    "name" : "融资列表",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "22cea4ac6e4e16fb2d19d8b31771ed48",
+    "name" : "储备项目列表",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "b1cad6c7edd585f7a4a1cba4b83f5b4e",
+    "name" : "产业基金投资项目列表",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "5f0d11e19945daa672af128fdb211322",
+    "name" : "专精特新发布批次企业分布",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  }, {
+    "uid" : "f355f9c5c4e01ffef915756417f9ca73",
+    "name" : "专精特新省域分布",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    }
+  } ]
+}

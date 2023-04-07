@@ -1,0 +1,4 @@
+[
+  "testcases/fundmap_test/test_subfund_04_getChildCompleteRate.py::TestGetMother::test_get_mother[sql0-2022-1-True-200-\\u64cd\\u4f5c\\u6210\\u529f]",
+  "testcases/fundmap_test/test_subfund_04_getChildCompleteRate.py::TestGetMother::test_get_mother[sql0-2021-1-True-200-\\u64cd\\u4f5c\\u6210\\u529f]"
+]

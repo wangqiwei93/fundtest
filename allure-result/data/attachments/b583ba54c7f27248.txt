@@ -1,0 +1,15 @@
+INFO     log:test_02_projectlib_getprojectlist.py:29 *************** 开始执行用例 ***************
+INFO     log:rest_client.py:51 接口请求地址 ==>> https://yzw.corptssl.com/stage-api/projectLib/getProjectList0908
+INFO     log:rest_client.py:52 接口请求方式 ==>> POST
+INFO     log:rest_client.py:54 接口请求头 ==>> {
+    "Content-Type": "application/json",
+    "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 ChannelId(0) LyraVM Nebula  AlipayDefined() AliApp(AP/10.1.80) AlipayClient/10.1.80 Language/en AlipayIDE",
+    "accept-charset": "utf-8",
+    "accept-encoding": "gzip, deflate",
+    "Authorization": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqaW5rb25nIiwibG9naW5fdXNlcl9rZXkiOiJjZWVhZTUzZS04Mzc5LTQ0ZjAtYjFkMi01ZDc3MmY5M2FjY2YifQ.cSWR8RtN-iidonHeONhsvcfNY3EfvVW6krRwk9j12EuLoQxIhdLQ9NUOow-zZiDSqX6N5CsfkXYvulz-WPAg1A"
+}
+INFO     log:rest_client.py:55 接口请求 params 参数 ==>> null
+INFO     log:rest_client.py:56 接口请求体 data 参数 ==>> "{\"page\": 1, \"limit\": 100, \"nationalIndustryCode\": \"\", \"newTypeCode\": \"\", \"area\": \"\", \"isFund\": null, \"hotProjectCode\": \"\", \"directoryLabel\": \"\", \"proChain\": \"C3216\", \"year\": null, \"regScale\": null, \"comType\": \"\", \"sslx\": \"\", \"keyword\": null}"
+INFO     log:rest_client.py:57 接口请求体 json 参数 ==>> null
+INFO     log:rest_client.py:58 接口上传附件 files 参数 ==>> None
+INFO     log:rest_client.py:59 接口 cookies 参数 ==>> null

@@ -1,0 +1,70 @@
+{
+  "total" : 6,
+  "items" : [ {
+    "uid" : "8f944aaba75dd1848b1793ba329b90d1",
+    "name" : "testcases.projectlib_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1943,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1943
+    }
+  }, {
+    "uid" : "bfce424b8a39a2abc865fa85d70b028b",
+    "name" : "testcases.overview_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 840,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 840
+    }
+  }, {
+    "uid" : "5f1cd33311eee6189607324f7ef98609",
+    "name" : "testcases.fundlib_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 339,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 339
+    }
+  }, {
+    "uid" : "dbe6d0c165382e966f1a1744ce680335",
+    "name" : "testcases.fundmap_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 114,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 114
+    }
+  }, {
+    "uid" : "b65593937407984d075e7b49fb5ec7e3",
+    "name" : "testcases.investment_analysis_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 26,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 26
+    }
+  }, {
+    "uid" : "de8ffb91fef7049e6ae209eea57366af",
+    "name" : "testcases.investresource_test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 9,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 9
+    }
+  } ]
+}

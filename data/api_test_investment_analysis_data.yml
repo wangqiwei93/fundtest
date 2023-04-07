@@ -1,0 +1,62 @@
+FieldList_test:
+  # page页码limit条数
+  # fieldType, fieldname, except_result, except_code, except_msg
+  - [ 1,'先进制造业领域', True, 200, '操作成功']
+  - [ 2,'三大科创高地领域', True, 200, '操作成功']
+  - [ 3,'十大标志性产业链', True, 200, '操作成功']
+
+group_count_test:
+  # grouptype, groupname, except_result, except_code, except_msg
+  - [-1,'储备项目个数和项目总投资数', True, 200, '操作成功']
+  - [0,'区域项目个数', True, 200, '操作成功']
+  - [1,'主管部门储备项目情况', True, 200, '操作成功']
+  - [2,'融资轮次', True, 200, '操作成功']
+
+group_mj_list_test:
+  # page, limit, listname, except_result, except_code, except_msg
+  - [ 1, 99999,'储备项目列表', True, 200, '操作成功' ]
+
+fund_mj_queryDwsFundMjCityMap:
+  #  listname, except_result, except_code, except_msg
+  - [ '产业基金已投项目列表', True, 200, '操作成功' ]
+
+professional_getOverview:
+  #  tag, except_result, except_code, except_msg
+  - [ '全国', True, 200, '操作成功' ]
+  - [ '浙江省', True, 200, '操作成功' ]
+
+professional_getlist:
+  #  tag, page, limit, except_result, except_code, except_msg
+  - [ '全国', 1, 999999, True, 200, '操作成功' ]
+  - [ '浙江省', 1, 999999, True, 200, '操作成功' ]
+
+professional_publishTimes:
+  #  city, province, tag, page, limit, except_result, except_code, except_msg
+  - [ '','','全国', 1, 999999, True, 200, '操作成功' ]
+
+professional_getMapOfCountry:
+  #  province, tag, except_result, except_code, except_msg
+  - [ '','全国', True, 200, '操作成功' ]
+
+professional_ipoTimes:
+  #   tagname, except_result, except_code, except_msg
+  - [ '融资轮次', True, 200, '操作成功' ]
+
+professional_getPieChart:
+  #   chartname, charttype, except_result, except_code, except_msg
+  - [ '十大标志性产业',3 , True, 200, '操作成功' ]
+  - [ '三大科创',2 , True, 200, '操作成功' ]
+  - [ '先进制造',1 , True, 200, '操作成功' ]
+
+honour_rank:
+  #   rankname, ranktype, except_result, except_code, except_msg
+  - [ '全省制造业高质量发展大会',2 , True, 200, '操作成功' ]
+  - [ '全省数字经济高质量发展大会',1 , True, 200, '操作成功' ]
+
+honour_getlist:
+  #   listname, page, limit, except_result, except_code, except_msg
+  - [ '浙江省', 1, 99999, True, 200, '操作成功' ]
+
+honour_getSixStatistic:
+  #   name, except_result, except_code, except_msg
+  - [ '光荣榜', True, 200, '操作成功' ]
