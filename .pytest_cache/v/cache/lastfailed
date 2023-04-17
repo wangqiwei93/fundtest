@@ -1,5 +1,5 @@
 {
-  "testcases/fundlib_test/test_01_fundlib_getlist.py": true,
+  "testcases/fundlib_test/test_01_fundlib_getlist.py::TestGetMother": true,
   "testcases/fundlib_test/test_01_fundlib_getlist.py::TestGetMother::test_get_mother[10-1----True-200-\\u64cd\\u4f5c\\u6210\\u529f]": true,
   "testcases/fundlib_test/test_01_fundlib_getlist.py::TestGetMother::test_get_mother[10-1---0-True-200-\\u64cd\\u4f5c\\u6210\\u529f]": true,
   "testcases/fundlib_test/test_01_fundlib_getlist.py::TestGetMother::test_get_mother[10-1---1-True-200-\\u64cd\\u4f5c\\u6210\\u529f]": true,
